@@ -129,6 +129,23 @@
   }
   .riddle-reveal { align-self: flex-start; }
 
+  /* multiple choice */
+  .mc-options { display: grid; gap: 0.5rem; }
+  .mc-option {
+    text-align: left; font: inherit; font-size: 0.95rem;
+    padding: 0.65em 0.9em; border-radius: 10px;
+    border: 1px solid var(--border); background: var(--cream);
+    cursor: pointer; color: var(--ink);
+  }
+  .mc-option:hover:not(:disabled) { border-color: var(--teal); }
+  .mc-option:disabled { cursor: default; }
+  .mc-option.correct { background: #DCEEDC; border-color: #6FA66F; font-weight: 700; }
+  .mc-option.wrong { background: #F3DCD4; border-color: var(--terracotta); }
+  .mc-explain {
+    background: var(--cream); border-radius: 10px; padding: 0.9em 1.1em;
+    font-size: 0.9rem; color: var(--ink-soft);
+  }
+
   footer {
     text-align: center; padding: 2.4rem 1.5rem; font-size: 0.85rem; color: var(--ink-soft);
   }
@@ -193,12 +210,12 @@
   const RIDDLES = [
     { tag: "Λεξιλογικό", q: "Ποιος είναι ο μοναδικός αριθμός που έχει τόσα γράμματα στ' όνομά του όσο και η αριθμητική του τιμή;", a: "Το 5 («πέντε» — 5 γράμματα)." },
     { tag: "Άλγεβρα", q: "Ένας αριθμός, πολλαπλασιασμένος με τον επόμενό του φυσικό αριθμό, μείον τον προηγούμενό του, κάνει 1937. Ποιος είναι ο αριθμός;", a: "44 (44×45 − 43 = 1980 − 43 = 1937)." },
-    { tag: "Ακολουθίες", q: "Σε μια ακολουθία, κάθε όρος είναι το άθροισμα των δύο προηγούμενων, ξεκινώντας από 1 και 1. Ποιος είναι ο 7ος όρος;", a: "13 (1, 1, 2, 3, 5, 8, 13, …)." },
-    { tag: "Άλγεβρα", q: "Αν a και b είναι θετικοί αριθμοί με a+b=10, ποια είναι η μικρότερη δυνατή τιμή του a²+b²;", a: "50, όταν a=b=5." },
-    { tag: "Λογική", q: "Έχεις τους αριθμούς 2, 3 και 4 — τον καθέναν από μία φορά, με όποιες πράξεις θες. Μπορείς να φτιάξεις το 19;", a: "Ναι: 2⁴ + 3 = 16 + 3 = 19." },
-    { tag: "Λογική", q: "🍌🍌🍌 = 30, 🍌+🍎+🍎 = 18, 🍎+🍊 = 14. Πόσο κάνει 🍊 + 🍌 + 🍎;", a: "24 (μπανάνα=10, μήλο=4, πορτοκάλι=10 → 10+10+4=24)." },
-    { tag: "Παγίδα!", q: "Ένα ρολόι χτυπάει 3 φορές μέσα σε 3 δευτερόλεπτα. Πόσο θα χρειαστεί για να χτυπήσει 7 φορές;", a: "9 δευτερόλεπτα, όχι 7! 3 χτύποι = 2 διαστήματα σε 3\", άρα 1,5\" το διάστημα. 7 χτύποι = 6 διαστήματα × 1,5\" = 9\"." },
-    { tag: "Αριθμοθεωρία", q: "Ποιο είναι το τελευταίο ψηφίο του 9²⁰²⁴;", a: "1 — το τελευταίο ψηφίο των δυνάμεων του 9 εναλλάσσεται 9, 1, 9, 1, …· σε άρτιο εκθέτη είναι πάντα 1." },
+    { type: "mc", tag: "Ακολουθίες", q: "Σε μια ακολουθία, κάθε όρος είναι το άθροισμα των δύο προηγούμενων, ξεκινώντας από 1 και 1. Ποιος είναι ο 7ος όρος;", options: ["8", "13", "21", "34"], correct: 1, explain: "1, 1, 2, 3, 5, 8, 13 — ο 7ος όρος είναι 13." },
+    { type: "mc", tag: "Άλγεβρα", q: "Αν a και b είναι θετικοί αριθμοί με a+b=10, ποια είναι η μικρότερη δυνατή τιμή του a²+b²;", options: ["50", "52", "54", "56"], correct: 0, explain: "Ελαχιστοποιείται όταν a=b=5: 5²+5²=50." },
+    { type: "mc", tag: "Λογική", q: "Έχεις τους αριθμούς 2, 3 και 4 — τον καθέναν από μία φορά, με όποιες πράξεις θες. Μπορείς να φτιάξεις το 19;", options: ["Ναι", "Όχι"], correct: 0, explain: "Ναι: 2⁴ + 3 = 16 + 3 = 19." },
+    { type: "mc", tag: "Λογική", q: "🍌🍌🍌 = 30, 🍌+🍎+🍎 = 18, 🍎+🍊 = 14. Πόσο κάνει 🍊 + 🍌 + 🍎;", options: ["22", "24", "18", "Κανένα από τα παραπάνω"], correct: 1, explain: "Μπανάνα=10, μήλο=4, πορτοκάλι=10 → 10+10+4=24." },
+    { type: "mc", tag: "Παγίδα!", q: "Ένα ρολόι χτυπάει 3 φορές μέσα σε 3 δευτερόλεπτα. Πόσο θα χρειαστεί για να χτυπήσει 7 φορές;", options: ["7", "8", "9"], correct: 2, explain: "3 χτύποι = 2 διαστήματα σε 3\", άρα 1,5\" το διάστημα. 7 χτύποι = 6 διαστήματα × 1,5\" = 9\" — όχι 7!" },
+    { type: "mc", tag: "Αριθμοθεωρία", q: "Ποιο είναι το τελευταίο ψηφίο του 9²⁰²⁴;", options: ["7", "1", "9", "6"], correct: 1, explain: "Το τελευταίο ψηφίο των δυνάμεων του 9 εναλλάσσεται 9, 1, 9, 1, …· σε άρτιο εκθέτη είναι πάντα 1." },
     { tag: "Αριθμοθεωρία", q: "Ποιος είναι ο μικρότερος θετικός ακέραιος που διαιρείται ακριβώς με όλους τους αριθμούς από το 1 έως το 10;", a: "2520." },
     { tag: "Άλγεβρα", q: "Ο πατέρας είναι σήμερα 3 φορές μεγαλύτερος από τον γιο του. Σε 12 χρόνια θα είναι μόνο 2 φορές μεγαλύτερος. Πόσων χρονών είναι ο γιος σήμερα;", a: "12 ετών (ο πατέρας είναι 36 → σε 12 χρόνια 48 και 24, δηλαδή 2×)." },
     { tag: "Άλγεβρα", q: "Το άθροισμα δύο αριθμών είναι 24 και η διαφορά τους 8. Ποιο είναι το γινόμενό τους;", a: "128 (οι αριθμοί είναι 16 και 8)." },
@@ -220,18 +237,8 @@
   ];
 
   const grid = document.getElementById('riddle-grid');
-  RIDDLES.forEach((r, i) => {
-    const card = document.createElement('div');
-    card.className = 'riddle';
 
-    const tag = document.createElement('span');
-    tag.className = 'riddle-tag';
-    tag.textContent = r.tag;
-
-    const q = document.createElement('p');
-    q.className = 'riddle-q';
-    q.textContent = r.q;
-
+  function buildRevealCard(r, i) {
     const answer = document.createElement('p');
     answer.className = 'riddle-a';
     answer.textContent = r.a;
@@ -251,7 +258,58 @@
       reveal.setAttribute('aria-expanded', String(!showing));
     });
 
-    card.append(tag, q, answer, reveal);
+    return [answer, reveal];
+  }
+
+  function buildMcCard(r, i) {
+    const optionsWrap = document.createElement('div');
+    optionsWrap.className = 'mc-options';
+
+    const explain = document.createElement('p');
+    explain.className = 'mc-explain';
+    explain.textContent = r.explain;
+    explain.hidden = true;
+    explain.id = `riddle-explain-${i}`;
+
+    let answered = false;
+    r.options.forEach((label, optIndex) => {
+      const opt = document.createElement('button');
+      opt.className = 'mc-option';
+      opt.type = 'button';
+      opt.textContent = label;
+      opt.setAttribute('aria-controls', explain.id);
+      opt.addEventListener('click', () => {
+        if (answered) return;
+        answered = true;
+        const buttons = optionsWrap.querySelectorAll('.mc-option');
+        buttons.forEach((b, bi) => {
+          b.disabled = true;
+          if (bi === r.correct) b.classList.add('correct');
+          else if (bi === optIndex) b.classList.add('wrong');
+        });
+        explain.hidden = false;
+      });
+      optionsWrap.appendChild(opt);
+    });
+
+    return [optionsWrap, explain];
+  }
+
+  RIDDLES.forEach((r, i) => {
+    const card = document.createElement('div');
+    card.className = 'riddle';
+
+    const tag = document.createElement('span');
+    tag.className = 'riddle-tag';
+    tag.textContent = r.tag;
+
+    const q = document.createElement('p');
+    q.className = 'riddle-q';
+    q.textContent = r.q;
+
+    const extra = r.type === 'mc' ? buildMcCard(r, i) : buildRevealCard(r, i);
+
+    card.append(tag, q, ...extra);
     grid.appendChild(card);
   });
 
