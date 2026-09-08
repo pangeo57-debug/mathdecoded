@@ -13,7 +13,7 @@
 <!--
   TODO πριν βγει live:
   1. Web3Forms access key στη φόρμα #contact-form (δες σχόλιο εκεί) — χωρίς αυτό η φόρμα δεν στέλνει email.
-  2. Τιμές/πακέτα στην ενότητα #packages — τώρα είναι ενδεικτικά, βάλε τις πραγματικές σου τιμές.
+  2. Μορφές μαθημάτων στην ενότητα #packages — πρόσθεσε κι άλλες αν θες (δες σχόλιο εκεί).
   3. Διάρκεια μαθήματος SAT στην ενότητα #levels.
   4. Μαρτυρίες μαθητών στην ενότητα #testimonials — προαιρετικό, αφαίρεσε αν δεν έχεις ακόμα.
   5. Τηλέφωνο επικοινωνίας στην ενότητα #contact, αν θες να προστεθεί δίπλα στο email.
@@ -182,22 +182,6 @@
   }
   .levels-table td:last-child { font-weight: 700; color: var(--teal-deep); white-space: nowrap; }
   .levels-table tr:last-child td { border-bottom: none; }
-
-  /* packages */
-  .packages { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2.4rem; }
-  @media (max-width: 900px) { .packages { grid-template-columns: 1fr; } }
-  .package { display: flex; flex-direction: column; }
-  .package.featured { border-color: var(--terracotta); border-width: 2px; position: relative; }
-  .package .price { font-family: var(--serif); font-size: 1.9rem; margin: 0.6rem 0; }
-  .package .price small { font-size: 0.95rem; font-weight: 400; color: var(--ink-soft); }
-  .package ul { padding-left: 1.1rem; margin: 1rem 0; flex: 1; }
-  .package li { margin-bottom: 0.4rem; }
-  .badge {
-    position: absolute; top: -0.8rem; right: 1.2rem;
-    background: var(--terracotta); color: var(--cream-2);
-    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em;
-    padding: 0.3em 0.8em; border-radius: 999px; text-transform: uppercase;
-  }
 
   /* social / testimonials */
   .ig-card {
@@ -440,40 +424,24 @@
 
   <section id="packages">
     <div class="wrap">
-      <span class="eyebrow">Πακέτα</span>
-      <h2>Ενδεικτικά πακέτα μαθημάτων</h2>
-      <!-- TODO: βάλε τις πραγματικές σου τιμές — αυτές είναι placeholder -->
-      <div class="packages">
-        <div class="card package">
-          <h3>Δοκιμαστικό</h3>
-          <div class="price">— <small>1 μάθημα</small></div>
-          <ul>
-            <li>Γνωριμία + διαγνωστικό test</li>
-            <li>Πρόταση πλάνου μελέτης</li>
-            <li>Χωρίς δέσμευση</li>
-          </ul>
-          <a class="btn btn-ghost" href="#contact">Κλείσε δοκιμαστικό</a>
+      <span class="eyebrow">Μορφές μαθημάτων</span>
+      <h2>Ατομικά, ομαδικά, και δικό σου υλικό</h2>
+      <!-- TODO: πρόσθεσε κι άλλα αν θες (π.χ. online εργαστήρια, επαναληπτικά πριν τις εξετάσεις) -->
+      <div class="grid-3">
+        <div class="card feature">
+          <div class="icon">👤</div>
+          <h3>Ατομικά μαθήματα</h3>
+          <p>1-προς-1, στο δικό σου tempo — όλη η ώρα του μαθήματος εστιάζει στα δικά σου κενά.</p>
         </div>
-        <div class="card package featured">
-          <span class="badge">Πιο δημοφιλές</span>
-          <h3>Μηνιαίο</h3>
-          <div class="price">— <small>/ μήνα</small></div>
-          <ul>
-            <li>4 μαθήματα 1-προς-1</li>
-            <li>Εξατομικευμένο υλικό εξάσκησης</li>
-            <li>Επικοινωνία για απορίες ανάμεσα στα μαθήματα</li>
-          </ul>
-          <a class="btn btn-primary" href="#contact">Ξεκίνα τώρα</a>
+        <div class="card feature">
+          <div class="icon">👥</div>
+          <h3>Ομαδικά μαθήματα</h3>
+          <p>Μικρές ομάδες συμμαθητών με κοντινό επίπεδο — ίδια μεθοδολογία, χαμηλότερο κόστος ανά μάθημα.</p>
         </div>
-        <div class="card package">
-          <h3>Εντατική προετοιμασία</h3>
-          <div class="price">— <small>πριν την εξέταση</small></div>
-          <ul>
-            <li>Αυξημένη συχνότητα μαθημάτων</li>
-            <li>Mock tests υπό συνθήκες εξέτασης</li>
-            <li>Στοχευμένη δουλειά στα πιο αδύναμα σημεία</li>
-          </ul>
-          <a class="btn btn-ghost" href="#contact">Ρώτα για διαθεσιμότητα</a>
+        <div class="card feature">
+          <div class="icon">📝</div>
+          <h3>Προσωπικές σημειώσεις</h3>
+          <p>Υλικό φτιαγμένο ειδικά για το επίπεδο και τους στόχους σου — όχι γενικό βιβλίο ασκήσεων.</p>
         </div>
       </div>
     </div>
