@@ -172,6 +172,22 @@
   }
   .step .num::before { content: counter(step); }
 
+  /* levels table */
+  .table-scroll { overflow-x: auto; margin-top: 2rem; }
+  .levels-table {
+    width: 100%; min-width: 480px; border-collapse: collapse;
+    background: var(--cream); border-radius: var(--radius); overflow: hidden;
+  }
+  .levels-table th, .levels-table td {
+    text-align: left; padding: 0.9em 1.2em; border-bottom: 1px solid var(--border);
+  }
+  .levels-table th {
+    font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--ink-soft); font-weight: 700;
+  }
+  .levels-table td:last-child { font-weight: 700; color: var(--teal-deep); white-space: nowrap; }
+  .levels-table tr:last-child td { border-bottom: none; }
+
   /* packages */
   .packages { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2.4rem; }
   @media (max-width: 900px) { .packages { grid-template-columns: 1fr; } }
@@ -233,6 +249,7 @@
     <ul class="nav-links">
       <li><a href="#about">Σχετικά</a></li>
       <li><a href="#why">Γιατί MathDecoded</a></li>
+      <li><a href="#levels">Τάξεις</a></li>
       <li><a href="#packages">Πακέτα</a></li>
       <li><a href="#faq">Ερωτήσεις</a></li>
     </ul>
@@ -333,6 +350,67 @@
           <div class="num"></div>
           <div><strong>Mock tests &amp; προσαρμογή</strong> — προσομοιώσεις υπό συνθήκες εξέτασης, με review μετά από κάθε μία.</div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="levels">
+    <div class="wrap">
+      <span class="eyebrow">Τάξεις &amp; Μαθήματα</span>
+      <h2>Διάρκεια μαθήματος ανά τάξη</h2>
+      <div class="table-scroll">
+        <table class="levels-table">
+          <thead>
+            <tr>
+              <th>Τάξη</th>
+              <th>Μάθημα</th>
+              <th>Διάρκεια</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Γυμνάσιο Α'</td>
+              <td>—</td>
+              <td>1,5 ώρα</td>
+            </tr>
+            <tr>
+              <td>Γυμνάσιο Β'</td>
+              <td>—</td>
+              <td>1,5 ώρα</td>
+            </tr>
+            <tr>
+              <td>Γυμνάσιο Γ'</td>
+              <td>—</td>
+              <td>2 ώρες</td>
+            </tr>
+            <tr>
+              <td>Λύκειο Α'</td>
+              <td>Άλγεβρα</td>
+              <td>2 ώρες</td>
+            </tr>
+            <tr>
+              <td>Λύκειο Α'</td>
+              <td>Γεωμετρία</td>
+              <td>1 ώρα</td>
+            </tr>
+            <tr>
+              <td>Λύκειο Β'</td>
+              <td>Άλγεβρα</td>
+              <td>2 ώρες</td>
+            </tr>
+            <tr>
+              <td>Λύκειο Β'</td>
+              <td>Μαθηματικά Προσανατολισμού</td>
+              <td>2 ώρες</td>
+            </tr>
+            <tr>
+              <td>Λύκειο Γ' (Πανελλήνιες)</td>
+              <td>—</td>
+              <td>4–4,5 ώρες</td>
+            </tr>
+            <!-- TODO: πρόσθεσε γραμμή SAT όταν οριστεί η διάρκεια -->
+          </tbody>
+        </table>
       </div>
     </div>
   </section>
