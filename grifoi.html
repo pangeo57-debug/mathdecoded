@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MathDecoded — Γρίφοι</title>
+<meta name="description" content="Μαθηματικοί γρίφοι και quiz — δοκίμασε τη λύση σου πριν την αποκαλύψεις.">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#EDE6D3">
+
+<!--
+  Για να προσθέσεις κι άλλους γρίφους: βρες τον πίνακα RIDDLES μέσα στο
+  <script> στο τέλος του αρχείου, και πρόσθεσε ένα ακόμα αντικείμενο
+  {tag: "...", q: "...", a: "..."} — η σελίδα τα σχεδιάζει αυτόματα,
+  δεν χρειάζεται να αγγίξεις το HTML.
+-->
+
+<style>
+  :root {
+    --cream: #EDE6D3;
+    --cream-2: #F6F1E5;
+    --cream-dark: #DBC8AA;
+    --ink: #1B1F24;
+    --ink-soft: #4A4740;
+    --teal: #436074;
+    --teal-deep: #2E4453;
+    --orange: #D08F4A;
+    --terracotta: #C06039;
+    --border: rgba(27,31,36,0.14);
+    --radius: 14px;
+    --serif: Georgia, 'Times New Roman', ui-serif, serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--cream);
+    line-height: 1.6;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+  section { padding: 3.5rem 1.5rem; }
+  .wrap { max-width: 1080px; margin: 0 auto; }
+  h1, h2, h3 { font-family: var(--serif); line-height: 1.15; margin: 0 0 0.6em; }
+  h1 { font-size: clamp(2rem, 4.4vw, 2.9rem); }
+  .eyebrow {
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    font-weight: 700;
+    margin-bottom: 0.8em;
+    display: block;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.85em 1.6em;
+    border-radius: 999px;
+    font-weight: 700;
+    text-decoration: none;
+    border: 2px solid transparent;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary { background: var(--terracotta); color: var(--cream-2); }
+  .btn-primary:hover { box-shadow: 0 6px 18px rgba(192,96,57,0.35); }
+  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--ink); }
+  .btn-ghost:hover { background: var(--ink); color: var(--cream); }
+  .btn-small { padding: 0.55em 1.1em; font-size: 0.85rem; }
+
+  /* header */
+  header {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(237,230,211,0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav {
+    max-width: 1080px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.8rem 1.5rem;
+  }
+  .brand { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+  .brand img { width: 40px; height: 40px; border-radius: 50%; }
+  .brand span { font-family: var(--serif); font-weight: 700; font-size: 1.25rem; letter-spacing: 0.02em; }
+  .nav-links { display: flex; gap: 1.6rem; font-weight: 600; font-size: 0.95rem; list-style: none; margin: 0; padding: 0; }
+  .nav-links a { text-decoration: none; }
+  .nav-links a:hover { color: var(--terracotta); }
+  .nav-links a[aria-current] { color: var(--terracotta); }
+  @media (max-width: 760px) { .nav-links { display: none; } }
+
+  /* intro */
+  .intro h1 { max-width: 20ch; }
+  .intro p.lead { font-size: 1.1rem; color: var(--ink-soft); max-width: 60ch; }
+
+  /* riddle grid */
+  .riddle-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem; margin-top: 1rem;
+  }
+  @media (max-width: 760px) { .riddle-grid { grid-template-columns: 1fr; } }
+
+  .riddle {
+    background: var(--cream-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.6rem;
+    display: flex; flex-direction: column; gap: 0.9rem;
+  }
+  .riddle-tag {
+    align-self: flex-start;
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+    padding: 0.3em 0.7em; border-radius: 999px;
+    background: var(--cream-dark); color: var(--ink);
+  }
+  .riddle-q { font-size: 1.02rem; }
+  .riddle-a {
+    background: var(--cream); border-radius: 10px; padding: 0.9em 1.1em;
+    font-size: 0.95rem; color: var(--teal-deep); font-weight: 600;
+  }
+  .riddle-reveal { align-self: flex-start; }
+
+  footer {
+    text-align: center; padding: 2.4rem 1.5rem; font-size: 0.85rem; color: var(--ink-soft);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a class="brand" href="index.html">
+      <img src="icon-192.png" alt="MathDecoded">
+      <span>MathDecoded</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#why">Γιατί MathDecoded</a></li>
+      <li><a href="index.html#levels">Τάξεις</a></li>
+      <li><a href="index.html#packages">Πακέτα</a></li>
+      <li><a href="grifoi.html" aria-current="page">Γρίφοι</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a class="btn btn-primary" href="index.html#contact">Κλείσε γνωριμία</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="intro">
+    <div class="wrap">
+      <span class="eyebrow">Γρίφοι</span>
+      <h1>Δοκίμασε τη λύση σου πριν την αποκαλύψεις.</h1>
+      <p class="lead">
+        Μαθηματικοί γρίφοι σαν κι αυτούς που ανεβαίνουν κάθε εβδομάδα στο
+        <a href="https://www.instagram.com/math__decoded" target="_blank" rel="noopener"><strong>@math__decoded</strong></a> —
+        μερικοί εύκολοι, μερικοί με παγίδα. Σκέψου πρώτα, μετά πάτα «Δες τη λύση».
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div id="riddle-grid" class="riddle-grid"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap" style="text-align:center">
+      <h2>Σου άρεσαν;</h2>
+      <p style="color:var(--ink-soft)">Στα μαθήματα δουλεύουμε ακριβώς έτσι — σπάμε το πρόβλημα, όχι μόνο απομνημονεύουμε τύπους.</p>
+      <a class="btn btn-primary" href="index.html#contact">Κλείσε δωρεάν γνωριμία</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  &copy; <span id="year"></span> MathDecoded. Ιδιωτικά μαθήματα Μαθηματικών · SAT · Πανελλήνιες.
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Πρόσθεσε νέους γρίφους εδώ — {tag, q, a} — η σελίδα τους σχεδιάζει αυτόματα.
+  const RIDDLES = [
+    { tag: "Λεξιλογικό", q: "Ποιος είναι ο μοναδικός αριθμός που έχει τόσα γράμματα στ' όνομά του όσο και η αριθμητική του τιμή;", a: "Το 5 («πέντε» — 5 γράμματα)." },
+    { tag: "Άλγεβρα", q: "Ένας αριθμός, πολλαπλασιασμένος με τον επόμενό του φυσικό αριθμό, μείον τον προηγούμενό του, κάνει 1937. Ποιος είναι ο αριθμός;", a: "44 (44×45 − 43 = 1980 − 43 = 1937)." },
+    { tag: "Ακολουθίες", q: "Σε μια ακολουθία, κάθε όρος είναι το άθροισμα των δύο προηγούμενων, ξεκινώντας από 1 και 1. Ποιος είναι ο 7ος όρος;", a: "13 (1, 1, 2, 3, 5, 8, 13, …)." },
+    { tag: "Άλγεβρα", q: "Αν a και b είναι θετικοί αριθμοί με a+b=10, ποια είναι η μικρότερη δυνατή τιμή του a²+b²;", a: "50, όταν a=b=5." },
+    { tag: "Λογική", q: "Έχεις τους αριθμούς 2, 3 και 4 — τον καθέναν από μία φορά, με όποιες πράξεις θες. Μπορείς να φτιάξεις το 19;", a: "Ναι: 2⁴ + 3 = 16 + 3 = 19." },
+    { tag: "Λογική", q: "🍌🍌🍌 = 30, 🍌+🍎+🍎 = 18, 🍎+🍊 = 14. Πόσο κάνει 🍊 + 🍌 + 🍎;", a: "24 (μπανάνα=10, μήλο=4, πορτοκάλι=10 → 10+10+4=24)." },
+    { tag: "Παγίδα!", q: "Ένα ρολόι χτυπάει 3 φορές μέσα σε 3 δευτερόλεπτα. Πόσο θα χρειαστεί για να χτυπήσει 7 φορές;", a: "9 δευτερόλεπτα, όχι 7! 3 χτύποι = 2 διαστήματα σε 3\", άρα 1,5\" το διάστημα. 7 χτύποι = 6 διαστήματα × 1,5\" = 9\"." },
+    { tag: "Αριθμοθεωρία", q: "Ποιο είναι το τελευταίο ψηφίο του 9²⁰²⁴;", a: "1 — το τελευταίο ψηφίο των δυνάμεων του 9 εναλλάσσεται 9, 1, 9, 1, …· σε άρτιο εκθέτη είναι πάντα 1." },
+    { tag: "Αριθμοθεωρία", q: "Ποιος είναι ο μικρότερος θετικός ακέραιος που διαιρείται ακριβώς με όλους τους αριθμούς από το 1 έως το 10;", a: "2520." },
+    { tag: "Άλγεβρα", q: "Ο πατέρας είναι σήμερα 3 φορές μεγαλύτερος από τον γιο του. Σε 12 χρόνια θα είναι μόνο 2 φορές μεγαλύτερος. Πόσων χρονών είναι ο γιος σήμερα;", a: "12 ετών (ο πατέρας είναι 36 → σε 12 χρόνια 48 και 24, δηλαδή 2×)." },
+    { tag: "Άλγεβρα", q: "Το άθροισμα δύο αριθμών είναι 24 και η διαφορά τους 8. Ποιο είναι το γινόμενό τους;", a: "128 (οι αριθμοί είναι 16 και 8)." },
+    { tag: "Αριθμοθεωρία", q: "Πόσα ψηφία έχει το γινόμενο 2¹⁰ × 5¹⁰;", a: "11 ψηφία (το γινόμενο είναι 10¹⁰ = 1 και 10 μηδενικά)." },
+    { tag: "Γεωμετρία", q: "Ένα ορθογώνιο έχει περίμετρο 28 και εμβαδόν 40. Ποιες είναι οι διαστάσεις του;", a: "10 και 4." },
+    { tag: "Άλγεβρα", q: "Σε μια τάξη το 60% είναι κορίτσια. Αν φύγουν 5 αγόρια, τα κορίτσια γίνονται 75% της τάξης. Πόσοι μαθητές ήταν αρχικά;", a: "25 μαθητές (15 κορίτσια, 10 αγόρια)." },
+    { tag: "Αριθμοθεωρία", q: "Ποιος είναι ο μικρότερος θετικός ακέραιος που γράφεται ως άθροισμα δύο τετραγώνων θετικών ακεραίων με δύο διαφορετικούς τρόπους;", a: "50 (=1²+7² = 5²+5²)." },
+    { tag: "Γεωμετρία", q: "Δύο κύκλοι έχουν ακτίνες 3 και 4, και τα κέντρα τους απέχουν 5 μονάδες. Τέμνονται, εφάπτονται, ή δεν έχουν κοινό σημείο;", a: "Τέμνονται σε δύο σημεία — παρατήρησε ότι 3-4-5 είναι ορθογώνιο τρίγωνο." },
+    { tag: "Στατιστική", q: "Ο μέσος όρος 5 αριθμών είναι 20. Αν αφαιρέσουμε τον μεγαλύτερο, ο μέσος όρος των υπόλοιπων 4 γίνεται 18. Ποιος είναι ο μεγαλύτερος αριθμός;", a: "28 (άθροισμα της 5άδας=100, άθροισμα της 4άδας=72)." },
+    { tag: "Αριθμοθεωρία", q: "Πόσοι ακέραιοι από το 1 έως το 100 δεν διαιρούνται ούτε με το 2 ούτε με το 3;", a: "33." },
+    { tag: "Άλγεβρα", q: "Ένα τρένο πάει με 60 km/h και επιστρέφει την ίδια διαδρομή με 40 km/h. Ποια είναι η μέση ταχύτητα σε ολόκληρη τη διαδρομή;", a: "48 km/h (όχι 50 — η μέση ταχύτητα δεν είναι απλός μέσος όρος)." },
+    { tag: "Ακολουθίες", q: "Ποιος είναι ο επόμενος όρος: 2, 6, 12, 20, 30, …;", a: "42 (κάθε όρος είναι n×(n+1): 1×2, 2×3, 3×4, …)." },
+    { tag: "Άλγεβρα", q: "Αν x² − 5x + 6 = 0, ποιο είναι το άθροισμα των τετραγώνων των ριζών;", a: "13 (οι ρίζες είναι 2 και 3 → 4+9=13)." },
+    { tag: "Συνδυαστική", q: "Με πόσους διαφορετικούς τρόπους μπορείς να διαλέξεις 2 μαθητές από μια ομάδα 6 για να λύσουν έναν γρίφο μαζί;", a: "15 τρόποι (συνδυασμοί 6 ανά 2)." },
+    { tag: "Λογική", q: "Ένα ρολόι χτυπάει τόσες φορές όσες δείχνει η ώρα. Στις 12:00 χρειάζεται 11 δευτερόλεπτα να ολοκληρώσει τα χτυπήματα. Πόσο θα χρειαστεί στις 6:00;", a: "5 δευτερόλεπτα (12 χτύποι = 11 διαστήματα → 1\" το διάστημα· 6 χτύποι = 5 διαστήματα)." },
+    { tag: "Πιθανότητες", q: "Σε ένα κουτί υπάρχουν 4 κόκκινες και 6 μπλε μπάλες. Βγάζεις 2 τυχαία, χωρίς επανατοποθέτηση. Ποια είναι η πιθανότητα να είναι και οι δύο κόκκινες;", a: "2/15 (=4/10 × 3/9)." },
+    { tag: "Άλγεβρα", q: "Δύο βρύσες γεμίζουν μια δεξαμενή σε 4 και 6 ώρες αντίστοιχα, μόνες τους. Αν ανοίξουν μαζί, σε πόσο χρόνο θα γεμίσει η δεξαμενή;", a: "2 ώρες και 24 λεπτά (ρυθμός 1/4+1/6=5/12 → χρόνος 12/5 ωρών)." },
+    { tag: "Άλγεβρα", q: "Ποιο είναι το μεγαλύτερο δυνατό γινόμενο δύο θετικών ακεραίων με άθροισμα 20;", a: "100 (10×10 — το γινόμενο μεγιστοποιείται όταν οι αριθμοί είναι ίσοι)." },
+  ];
+
+  const grid = document.getElementById('riddle-grid');
+  RIDDLES.forEach((r, i) => {
+    const card = document.createElement('div');
+    card.className = 'riddle';
+
+    const tag = document.createElement('span');
+    tag.className = 'riddle-tag';
+    tag.textContent = r.tag;
+
+    const q = document.createElement('p');
+    q.className = 'riddle-q';
+    q.textContent = r.q;
+
+    const answer = document.createElement('p');
+    answer.className = 'riddle-a';
+    answer.textContent = r.a;
+    answer.hidden = true;
+    answer.id = `riddle-a-${i}`;
+
+    const reveal = document.createElement('button');
+    reveal.className = 'btn btn-ghost btn-small riddle-reveal';
+    reveal.type = 'button';
+    reveal.textContent = 'Δες τη λύση';
+    reveal.setAttribute('aria-expanded', 'false');
+    reveal.setAttribute('aria-controls', answer.id);
+    reveal.addEventListener('click', () => {
+      const showing = !answer.hidden;
+      answer.hidden = showing;
+      reveal.textContent = showing ? 'Δες τη λύση' : 'Κρύψε τη λύση';
+      reveal.setAttribute('aria-expanded', String(!showing));
+    });
+
+    card.append(tag, q, answer, reveal);
+    grid.appendChild(card);
+  });
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  }
+</script>
+
+</body>
+</html>
