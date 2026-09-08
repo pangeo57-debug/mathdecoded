@@ -12,9 +12,11 @@
 
 <!--
   TODO πριν βγει live:
-  1. Τιμές/πακέτα στην ενότητα #packages — τώρα είναι ενδεικτικά, βάλε τις πραγματικές σου τιμές.
-  2. Μαρτυρίες μαθητών στην ενότητα #testimonials — προαιρετικό, αφαίρεσε αν δεν έχεις ακόμα.
-  3. Τηλέφωνο επικοινωνίας στην ενότητα #contact, αν θες να προστεθεί δίπλα στο email.
+  1. Web3Forms access key στη φόρμα #contact-form (δες σχόλιο εκεί) — χωρίς αυτό η φόρμα δεν στέλνει email.
+  2. Τιμές/πακέτα στην ενότητα #packages — τώρα είναι ενδεικτικά, βάλε τις πραγματικές σου τιμές.
+  3. Διάρκεια μαθήματος SAT στην ενότητα #levels.
+  4. Μαρτυρίες μαθητών στην ενότητα #testimonials — προαιρετικό, αφαίρεσε αν δεν έχεις ακόμα.
+  5. Τηλέφωνο επικοινωνίας στην ενότητα #contact, αν θες να προστεθεί δίπλα στο email.
 -->
 
 <style>
@@ -232,6 +234,10 @@
   .contact-links { display: grid; gap: 1rem; margin-top: 1.6rem; }
   .contact-links a { text-decoration: none; display: flex; align-items: center; gap: 0.7em; font-weight: 600; }
   .contact-links a:hover { color: var(--orange); }
+  #form-status { margin: 0; font-size: 0.9rem; min-height: 1.2em; }
+  #form-status.ok { color: #7FBF8E; }
+  #form-status.err { color: #E08A6E; }
+  .form button[disabled] { opacity: 0.6; cursor: not-allowed; }
 
   footer {
     text-align: center; padding: 2.4rem 1.5rem; font-size: 0.85rem; color: var(--ink-soft);
@@ -502,11 +508,19 @@
         <p>Στείλε λίγα λόγια για τον στόχο σου (SAT / Πανελλήνιες, ημερομηνία εξέτασης, τρέχον επίπεδο) και θα σου απαντήσω σύντομα.</p>
         <div class="contact-links">
           <a href="https://www.instagram.com/math__decoded" target="_blank" rel="noopener">Instagram — @math__decoded</a>
-          <!-- TODO: αντικατέστησε με το πραγματικό email/τηλέφωνό σου -->
           <a href="mailto:pangeo57@yahoo.gr">Email — pangeo57@yahoo.gr</a>
         </div>
       </div>
-      <form class="form" action="mailto:pangeo57@yahoo.gr" method="post" enctype="text/plain">
+      <!--
+        TODO: βάλε το πραγματικό σου Web3Forms access key παρακάτω.
+        Πάρε το δωρεάν σε 30": https://web3forms.com -> βάλε το email σου
+        (pangeo57@yahoo.gr) -> σου στέλνουν το key στο mail. Μέχρι τότε η
+        φόρμα θα δείχνει μήνυμα λάθους στον επισκέπτη αντί να στέλνει email.
+      -->
+      <form class="form" id="contact-form">
+        <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY_HERE">
+        <input type="hidden" name="subject" value="Νέο μήνυμα από το MathDecoded site">
+        <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
         <div>
           <label for="name">Όνομα</label>
           <input id="name" name="Όνομα" type="text" placeholder="Το όνομά σου" required>
@@ -524,6 +538,7 @@
           <textarea id="message" name="Μήνυμα" rows="4" placeholder="Πες μου λίγα λόγια για το πού βρίσκεσαι τώρα"></textarea>
         </div>
         <button class="btn btn-primary" type="submit">Στείλε μήνυμα</button>
+        <p id="form-status" role="status"></p>
       </form>
     </div>
   </section>
@@ -540,6 +555,42 @@
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js').catch(() => {});
   }
+
+  const contactForm = document.getElementById('contact-form');
+  const formStatus = document.getElementById('form-status');
+  contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const submitBtn = contactForm.querySelector('button[type="submit"]');
+    const accessKey = contactForm.access_key.value;
+    if (!accessKey || accessKey === 'YOUR_WEB3FORMS_ACCESS_KEY_HERE') {
+      formStatus.textContent = 'Η φόρμα δεν έχει ρυθμιστεί ακόμα — στείλε email απευθείας στο pangeo57@yahoo.gr.';
+      formStatus.className = 'err';
+      return;
+    }
+    submitBtn.disabled = true;
+    formStatus.textContent = 'Αποστολή...';
+    formStatus.className = '';
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(Object.fromEntries(new FormData(contactForm))),
+      });
+      const data = await res.json();
+      if (data.success) {
+        formStatus.textContent = 'Ευχαριστώ! Θα σου απαντήσω σύντομα.';
+        formStatus.className = 'ok';
+        contactForm.reset();
+      } else {
+        throw new Error(data.message || 'Αποτυχία αποστολής');
+      }
+    } catch (err) {
+      formStatus.textContent = 'Κάτι πήγε στραβά — στείλε email απευθείας στο pangeo57@yahoo.gr.';
+      formStatus.className = 'err';
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
 </script>
 
 </body>
