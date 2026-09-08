@@ -249,7 +249,6 @@
       <li><a href="#why">Γιατί MathDecoded</a></li>
       <li><a href="#levels">Τάξεις</a></li>
       <li><a href="#packages">Πακέτα</a></li>
-      <li><a href="#faq">Ερωτήσεις</a></li>
     </ul>
     <div class="nav-cta">
       <a class="btn btn-primary" href="#contact">Κλείσε γνωριμία</a>
@@ -283,6 +282,49 @@
       <div class="hero-art">
         <img src="icon-512.png" alt="Λογότυπο MathDecoded — μισός εγκέφαλος με τύπους, μισός με γεωμετρικό μοτίβο">
       </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">Επικοινωνία</span>
+        <h2>Κλείσε τη δωρεάν γνωριμία σου</h2>
+        <p>Στείλε λίγα λόγια για τον στόχο σου (SAT / Πανελλήνιες, ημερομηνία εξέτασης, τρέχον επίπεδο) και θα σου απαντήσω σύντομα.</p>
+        <div class="contact-links">
+          <a href="https://www.instagram.com/math__decoded" target="_blank" rel="noopener">Instagram — @math__decoded</a>
+          <a href="mailto:pangeo57@yahoo.gr">Email — pangeo57@yahoo.gr</a>
+        </div>
+      </div>
+      <!--
+        TODO: βάλε το πραγματικό σου Web3Forms access key παρακάτω.
+        Πάρε το δωρεάν σε 30": https://web3forms.com -> βάλε το email σου
+        (pangeo57@yahoo.gr) -> σου στέλνουν το key στο mail. Μέχρι τότε η
+        φόρμα θα δείχνει μήνυμα λάθους στον επισκέπτη αντί να στέλνει email.
+      -->
+      <form class="form" id="contact-form">
+        <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY_HERE">
+        <input type="hidden" name="subject" value="Νέο μήνυμα από το MathDecoded site">
+        <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
+        <div>
+          <label for="name">Όνομα</label>
+          <input id="name" name="Όνομα" type="text" placeholder="Το όνομά σου" required>
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input id="email" name="Email" type="email" placeholder="you@example.com" required>
+        </div>
+        <div>
+          <label for="goal">Στόχος</label>
+          <input id="goal" name="Στόχος" type="text" placeholder="π.χ. SAT Math, εξέταση Μάιος 2027">
+        </div>
+        <div>
+          <label for="message">Μήνυμα</label>
+          <textarea id="message" name="Μήνυμα" rows="4" placeholder="Πες μου λίγα λόγια για το πού βρίσκεσαι τώρα"></textarea>
+        </div>
+        <button class="btn btn-primary" type="submit">Στείλε μήνυμα</button>
+        <p id="form-status" role="status"></p>
+      </form>
     </div>
   </section>
 
@@ -454,69 +496,6 @@
     </div>
   </section>
 
-  <section id="faq">
-    <div class="wrap">
-      <span class="eyebrow">Ερωτήσεις</span>
-      <h2>Συχνές ερωτήσεις</h2>
-      <div class="steps">
-        <div class="card">
-          <h3>Κάνεις μαθήματα online;</h3>
-          <p>Ναι — τα μαθήματα γίνονται online ή δια ζώσης, ό,τι σε βολεύει καλύτερα.</p>
-        </div>
-        <div class="card">
-          <h3>Διδάσκεις μόνο SAT ή και Πανελλήνιες;</h3>
-          <p>Και τα δύο — η μέθοδος είναι ίδια: εντοπισμός κενών, εξάσκηση σε πραγματικά θέματα, mock tests.</p>
-        </div>
-        <div class="card">
-          <h3>Πώς ξεκινάμε;</h3>
-          <p>Με μια δωρεάν γνωριμία 20 λεπτών, online ή τηλεφωνικά, χωρίς καμία δέσμευση.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="contact">
-    <div class="wrap">
-      <div>
-        <span class="eyebrow">Επικοινωνία</span>
-        <h2>Κλείσε τη δωρεάν γνωριμία σου</h2>
-        <p>Στείλε λίγα λόγια για τον στόχο σου (SAT / Πανελλήνιες, ημερομηνία εξέτασης, τρέχον επίπεδο) και θα σου απαντήσω σύντομα.</p>
-        <div class="contact-links">
-          <a href="https://www.instagram.com/math__decoded" target="_blank" rel="noopener">Instagram — @math__decoded</a>
-          <a href="mailto:pangeo57@yahoo.gr">Email — pangeo57@yahoo.gr</a>
-        </div>
-      </div>
-      <!--
-        TODO: βάλε το πραγματικό σου Web3Forms access key παρακάτω.
-        Πάρε το δωρεάν σε 30": https://web3forms.com -> βάλε το email σου
-        (pangeo57@yahoo.gr) -> σου στέλνουν το key στο mail. Μέχρι τότε η
-        φόρμα θα δείχνει μήνυμα λάθους στον επισκέπτη αντί να στέλνει email.
-      -->
-      <form class="form" id="contact-form">
-        <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY_HERE">
-        <input type="hidden" name="subject" value="Νέο μήνυμα από το MathDecoded site">
-        <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
-        <div>
-          <label for="name">Όνομα</label>
-          <input id="name" name="Όνομα" type="text" placeholder="Το όνομά σου" required>
-        </div>
-        <div>
-          <label for="email">Email</label>
-          <input id="email" name="Email" type="email" placeholder="you@example.com" required>
-        </div>
-        <div>
-          <label for="goal">Στόχος</label>
-          <input id="goal" name="Στόχος" type="text" placeholder="π.χ. SAT Math, εξέταση Μάιος 2027">
-        </div>
-        <div>
-          <label for="message">Μήνυμα</label>
-          <textarea id="message" name="Μήνυμα" rows="4" placeholder="Πες μου λίγα λόγια για το πού βρίσκεσαι τώρα"></textarea>
-        </div>
-        <button class="btn btn-primary" type="submit">Στείλε μήνυμα</button>
-        <p id="form-status" role="status"></p>
-      </form>
-    </div>
-  </section>
 
 </main>
 
