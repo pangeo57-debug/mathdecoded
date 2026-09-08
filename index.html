@@ -141,13 +141,6 @@
   }
   .alt .card { background: var(--cream); }
 
-  /* about */
-  .about-grid {
-    display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 3rem; align-items: center;
-  }
-  @media (max-width: 780px) { .about-grid { grid-template-columns: 1fr; } }
-  .about-grid img { border-radius: var(--radius); }
-
   /* why / features */
   .grid-3 {
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2.4rem;
@@ -253,7 +246,6 @@
       <span>MathDecoded</span>
     </a>
     <ul class="nav-links">
-      <li><a href="#about">Σχετικά</a></li>
       <li><a href="#why">Γιατί MathDecoded</a></li>
       <li><a href="#levels">Τάξεις</a></li>
       <li><a href="#packages">Πακέτα</a></li>
@@ -294,24 +286,7 @@
     </div>
   </section>
 
-  <section id="about" class="alt">
-    <div class="wrap about-grid">
-      <img src="icon-512.png" alt="MathDecoded">
-      <div>
-        <span class="eyebrow">Σχετικά</span>
-        <h2>Δες τα μαθήματα στην πράξη — στο Instagram.</h2>
-        <p>
-          Στο <strong>@math__decoded</strong> ανεβαίνουν tips, quiz και κόλπα για SAT Math και
-          Πανελλήνιες κάθε εβδομάδα — η καλύτερη εικόνα του πώς δουλεύουμε πριν κλείσεις μάθημα.
-        </p>
-        <a class="btn btn-primary" href="https://www.instagram.com/math__decoded" target="_blank" rel="noopener">
-          Άνοιξε το @math__decoded ↗
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <section id="why">
+  <section id="why" class="alt">
     <div class="wrap">
       <span class="eyebrow">Γιατί MathDecoded</span>
       <h2>Δεν διαβάζουμε απλά ύλη — αποκωδικοποιούμε την εξέταση.</h2>
@@ -335,7 +310,7 @@
     </div>
   </section>
 
-  <section class="alt">
+  <section>
     <div class="wrap">
       <span class="eyebrow">Πώς δουλεύουμε</span>
       <h2>Από την πρώτη γνωριμία μέχρι την εξέταση</h2>
@@ -360,7 +335,7 @@
     </div>
   </section>
 
-  <section id="levels">
+  <section id="levels" class="alt">
     <div class="wrap">
       <span class="eyebrow">Τάξεις &amp; Μαθήματα</span>
       <h2>Διάρκεια μαθήματος ανά τάξη</h2>
