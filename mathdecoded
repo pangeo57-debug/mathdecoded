@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathDecoded — Ιδιωτικά μαθήματα Μαθηματικών & προετοιμασία SAT</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f6efe1;
+            --text-color: #2b2a29;
+            --accent-color: #c85135;
+            --card-bg: #ecdcc1;
+            --dark-bg: #2b2a29;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Navbar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-family: var(--font-heading);
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .btn-outline {
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            padding: 12px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        /* Sections General */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-label {
+            color: var(--accent-color);
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        h2 {
+            font-family: var(--font-heading);
+            font-size: 42px;
+            line-height: 1.2;
+            margin-bottom: 40px;
+        }
+
+        /* Hero */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 60px 0 100px;
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .hero h1 {
+            font-family: var(--font-heading);
+            font-size: 56px;
+            line-height: 1.1;
+            margin-bottom: 24px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 40px;
+            color: #4a4846;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+        }
+
+        /* Grid Cards */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            padding: 40px 32px;
+            border-radius: 16px;
+        }
+
+        .card-icon {
+            font-size: 24px;
+            margin-bottom: 24px;
+            background: #d8c6a7;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+
+        .card h3 {
+            font-family: var(--font-heading);
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+
+        .card p {
+            font-size: 15px;
+            color: #4a4846;
+        }
+
+        /* Process */
+        .process-list {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .process-item {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .process-number {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        /* Table */
+        .classes-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .classes-table th, .classes-table td {
+            padding: 20px 32px;
+            text-align: left;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .classes-table th {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666;
+            font-weight: 600;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background-color: var(--dark-bg);
+            color: white;
+            padding: 100px 0;
+            margin-top: 40px;
+            border-radius: 32px 32px 0 0;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+        }
+
+        .contact-info h2 {
+            color: white;
+        }
+
+        .contact-info p {
+            color: #a0a0a0;
+            margin-bottom: 40px;
+            font-size: 16px;
+        }
+
+        .contact-details p {
+            margin-bottom: 12px;
+            font-weight: 500;
+            color: #e0e0e0;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #e0e0e0;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 16px;
+            background-color: transparent;
+            border: 1px solid #4a4846;
+            border-radius: 8px;
+            color: white;
+            font-family: var(--font-body);
+            font-size: 15px;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        .contact-form .btn-primary {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        /* Footer */
+        .footer-community {
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 40px 0;
+        }
+
+        .community-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .community-text h4 {
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .community-text p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .copyright {
+            text-align: center;
+            color: #888;
+            font-size: 13px;
+            padding-bottom: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .hero, .contact-grid {
+                flex-direction: column;
+                grid-template-columns: 1fr;
+            }
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            .nav-links {
+                display: none;
+            }
+            h1 {
+                font-size: 42px !important;
+            }
+            h2 {
+                font-size: 32px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <nav>
+            <a href="#" class="logo">
+                🧠 MathDecoded
+            </a>
+            <div class="nav-links">
+                <a href="#why">Γιατί MathDecoded</a>
+                <a href="#classes">Τάξεις</a>
+                <a href="#formats">Πακέτα</a>
+                <a href="#">Γρίφοι</a>
+            </div>
+            <a href="#contact" class="btn-primary">Κλείσε γνωριμία</a>
+        </nav>
+
+        <section class="hero">
+            <div class="hero-content">
+                <div class="section-label">ΙΔΙΩΤΙΚΑ ΜΑΘΗΜΑΤΑ ΜΑΘΗΜΑΤΙΚΩΝ</div>
+                <h1>Τα μαθηματικά, αποκωδικοποιημένα.</h1>
+                <p>Προετοιμασία για το <strong>SAT Math</strong> (και τις Πανελλήνιες) με προσωπικό πρόγραμμα, φτιαγμένο γύρω από το πώς σκέφτεσαι — όχι γύρω από ένα τυποποιημένο βιβλίο ασκήσεων.</p>
+                <div class="hero-buttons">
+                    <a href="#contact" class="btn-primary">Κλείσε δωρεάν γνωριμία 20'</a>
+                    <a href="https://instagram.com/math__decoded" target="_blank" class="btn-outline">Ακολούθησε @math__decoded</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="why">
+            <div class="section-label">ΓΙΑΤΙ MATHDECODED</div>
+            <h2>Δεν διαβάζουμε απλά ύλη — αποκωδικοποιούμε την εξέταση.</h2>
+            
+            <div class="grid-3">
+                <div class="card">
+                    <div class="card-icon">🎯</div>
+                    <h3>Εστιασμένο στην εξέταση</h3>
+                    <p>Δουλεύουμε πάνω σε πραγματικά θέματα SAT / Πανελληνίων, όχι γενικές ασκήσεις — μαθαίνεις τα patterns που επαναλαμβάνονται.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🧠</div>
+                    <h3>Προσωπικό πρόγραμμα</h3>
+                    <p>Ξεκινάμε από διάγνωση κενών και χτίζουμε πλάνο γύρω από το δικό σου tempo, όχι ένα σταθερό πρόγραμμα για όλους.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">📈</div>
+                    <h3>Ορατή πρόοδος</h3>
+                    <p>Τακτικά mock tests και καταγραφή επίδοσης, ώστε να ξέρεις ακριβώς πού βελτιώνεσαι πριν την εξέταση.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="section-label">ΠΩΣ ΔΟΥΛΕΥΟΥΜΕ</div>
+            <h2>Από την πρώτη γνωριμία μέχρι την εξέταση</h2>
+            
+            <div class="process-list">
+                <div class="process-item">
+                    <div class="process-number">1</div>
+                    <p><strong>Δωρεάν γνωριμία (20')</strong> — μιλάμε για στόχο, deadline εξέτασης και τρέχον επίπεδο.</p>
+                </div>
+                <div class="process-item">
+                    <div class="process-number">2</div>
+                    <p><strong>Διαγνωστικό test</strong> — εντοπίζουμε ακριβώς ποια κεφάλαια/τύποι ερωτήσεων χρειάζονται δουλειά.</p>
+                </div>
+                <div class="process-item">
+                    <div class="process-number">3</div>
+                    <p><strong>Πρόγραμμα μαθημάτων</strong> — εβδομαδιαία μαθήματα 1-προς-1, online ή δια ζώσης, με ασκήσεις ανάμεσα.</p>
+                </div>
+                <div class="process-item">
+                    <div class="process-number">4</div>
+                    <p><strong>Mock tests & προσαρμογή</strong> — προσομοιώσεις υπό συνθήκες εξέτασης, με review μετά από κάθε μία.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="formats">
+            <div class="section-label">ΜΟΡΦΕΣ ΜΑΘΗΜΑΤΩΝ</div>
+            <h2>Ατομικά, ομαδικά, και δικό σου υλικό</h2>
+            
+            <div class="grid-3">
+                <div class="card">
+                    <div class="card-icon">👤</div>
+                    <h3>Ατομικά μαθήματα</h3>
+                    <p>1-προς-1, στο δικό σου tempo — όλη η ώρα του μαθήματος εστιάζει στα δικά σου κενά.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">👥</div>
+                    <h3>Ομαδικά μαθήματα</h3>
+                    <p>Μικρές ομάδες συμμαθητών με κοντινό επίπεδο — ίδια μεθοδολογία, χαμηλότερο κόστος ανά μάθημα.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">📝</div>
+                    <h3>Προσωπικές σημειώσεις</h3>
+                    <p>Υλικό φτιαγμένο ειδικά για το επίπεδο και τους στόχους σου — όχι γενικό βιβλίο ασκήσεων.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="classes">
+            <div class="section-label">ΤΑΞΕΙΣ & ΜΑΘΗΜΑΤΑ</div>
+            <h2>Διάρκεια μαθήματος ανά τάξη</h2>
+            
+            <table class="classes-table">
+                <thead>
+                    <tr>
+                        <th>ΤΑΞΗ</th>
+                        <th>ΜΑΘΗΜΑ</th>
+                        <th>ΔΙΑΡΚΕΙΑ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Γυμνάσιο Α'</td>
+                        <td>—</td>
+                        <td>1,5 ώρα</td>
+                    </tr>
+                    <tr>
+                        <td>Γυμνάσιο Β'</td>
+                        <td>—</td>
+                        <td>1,5 ώρα</td>
+                    </tr>
+                    <tr>
+                        <td>Γυμνάσιο Γ'</td>
+                        <td>—</td>
+                        <td>2 ώρες</td>
+                    </tr>
+                    <tr>
+                        <td>Λύκειο Α'</td>
+                        <td>Άλγεβρα</td>
+                        <td>2 ώρες</td>
+                    </tr>
+                    <tr>
+                        <td>Λύκειο Α'</td>
+                        <td>Γεωμετρία</td>
+                        <td>1 ώρα</td>
+                    </tr>
+                    <tr>
+                        <td>Λύκειο Β'</td>
+                        <td>Άλγεβρα</td>
+                        <td>2 ώρες</td>
+                    </tr>
+                    <tr>
+                        <td>Λύκειο Β'</td>
+                        <td>Μαθηματικά Προσανατολισμού</td>
+                        <td>2 ώρες</td>
+                    </tr>
+                    <tr>
+                        <td>Λύκειο Γ'</td>
+                        <td>Μαθηματικά Προσανατολισμού</td>
+                        <td>2-3 ώρες</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <div class="section-label">ΕΠΙΚΟΙΝΩΝΙΑ</div>
+                    <h2>Κλείσε τη δωρεάν<br>γνωριμία σου</h2>
+                    <p>Στείλε λίγα λόγια για τον στόχο σου (SAT / Πανελλήνιες, ημερομηνία εξέτασης, τρέχον επίπεδο) και θα σου απαντήσω σύντομα.</p>
+                    
+                    <div class="contact-details">
+                        <p>Instagram — @math__decoded</p>
+                        <p>Email — pangeo57@yahoo.gr</p>
+                    </div>
+                </div>
+
+                <!-- Η φόρμα στέλνει απευθείας στο email σου μέσω FormSubmit -->
+                <form class="contact-form" action="https://formsubmit.co/pangeo57@yahoo.gr" method="POST">
+                    <!-- Απενεργοποίηση Captcha για πιο καθαρή εμπειρία -->
+                    <input type="hidden" name="_captcha" value="false">
+                    <!-- Το email που θα φαίνεται ότι έστειλε το μήνυμα -->
+                    <input type="hidden" name="_subject" value="Νέο μήνυμα από το MathDecoded!">
+
+                    <div class="form-group">
+                        <label for="name">Όνομα</label>
+                        <input type="text" id="name" name="name" placeholder="Το όνομά σου" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="goal">Στόχος</label>
+                        <input type="text" id="goal" name="goal" placeholder="π.χ. SAT Math, εξέταση Μάιος 2027" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Μήνυμα</label>
+                        <textarea id="message" name="message" placeholder="Πες μου λίγα λόγια για το πού βρίσκεσαι τώρα" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">Στείλε μήνυμα</button>
+                </form>
+            </div>
+
+            <div class="footer-community">
+                <div class="community-info">
+                    <div class="card-icon" style="margin-bottom:0;">🧠</div>
+                    <div class="community-text">
+                        <h4>@math__decoded</h4>
+                        <p>Tips, quiz και κόλπα για μαθηματικά, SAT & Πανελλήνιες</p>
+                    </div>
+                </div>
+                <a href="https://instagram.com/math__decoded" target="_blank" class="btn-primary">Δες το Instagram</a>
+            </div>
+
+            <p class="copyright">© 2026 MathDecoded. Ιδιωτικά μαθήματα Μαθηματικών - SAT - Πανελλήνιες.</p>
+        </div>
+    </section>
+
+</body>
+</html>
