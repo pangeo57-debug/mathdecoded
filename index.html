@@ -57,6 +57,13 @@
             color: var(--text-color);
         }
 
+        .logo-img {
+            width: 36px;
+            height: 36px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
         .nav-links {
             display: flex;
             gap: 32px;
@@ -141,6 +148,11 @@
         .hero-buttons {
             display: flex;
             gap: 16px;
+        }
+
+        .hero-image img {
+            max-width: 420px;
+            border-radius: 20px;
         }
 
         /* Grid Cards */
@@ -308,6 +320,7 @@
             justify-content: space-between;
             align-items: center;
             margin: 40px 0;
+            color: var(--text-color);
         }
 
         .community-info {
@@ -358,13 +371,14 @@
     <div class="container">
         <nav>
             <a href="#" class="logo">
-                🧠 MathDecoded
+                <img src="https://i.ibb.co/3m0q1v0/math-logo.png" alt="MathDecoded Logo" class="logo-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'36\' height=\'36\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'50\' fill=\'%23c85135\'/><text x=\'50\' y=\'65\' font-size=\'40\' text-anchor=\'middle\' fill=\'white\' font-family=\'serif\'>M</text></svg>'">
+                MathDecoded
             </a>
             <div class="nav-links">
                 <a href="#why">Γιατί MathDecoded</a>
                 <a href="#classes">Τάξεις</a>
                 <a href="#formats">Πακέτα</a>
-                <a href="#">Γρίφοι</a>
+                <a href="#contact">Επικοινωνία</a>
             </div>
             <a href="#contact" class="btn-primary">Κλείσε γνωριμία</a>
         </nav>
@@ -378,6 +392,9 @@
                     <a href="#contact" class="btn-primary">Κλείσε δωρεάν γνωριμία 20'</a>
                     <a href="https://instagram.com/math__decoded" target="_blank" class="btn-outline">Ακολούθησε @math__decoded</a>
                 </div>
+            </div>
+            <div class="hero-image">
+                <img src="https://i.ibb.co/3m0q1v0/math-logo.png" alt="MathDecoded Brain Logo" onerror="this.style.display='none'">
             </div>
         </section>
 
@@ -523,13 +540,8 @@
                     </div>
                 </div>
 
-                <!-- Η φόρμα στέλνει απευθείας στο email σου μέσω FormSubmit -->
+                <!-- Η φόρμα συνδεδεμένη με το Formspree -->
                 <form class="contact-form" action="https://formspree.io/f/xyeyvzga" method="POST">
-                    <!-- Απενεργοποίηση Captcha για πιο καθαρή εμπειρία -->
-                    <input type="hidden" name="_captcha" value="false">
-                    <!-- Το email που θα φαίνεται ότι έστειλε το μήνυμα -->
-                    <input type="hidden" name="_subject" value="Νέο μήνυμα από το MathDecoded!">
-
                     <div class="form-group">
                         <label for="name">Όνομα</label>
                         <input type="text" id="name" name="name" placeholder="Το όνομά σου" required>
@@ -537,6 +549,10 @@
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Τηλέφωνο</label>
+                        <input type="tel" id="phone" name="phone" placeholder="Το κινητό σου (προαιρετικά)">
                     </div>
                     <div class="form-group">
                         <label for="goal">Στόχος</label>
