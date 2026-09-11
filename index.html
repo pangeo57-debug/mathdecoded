@@ -57,11 +57,9 @@
             color: var(--text-color);
         }
 
-        .logo-img {
-            width: 36px;
-            height: 36px;
-            object-fit: cover;
-            border-radius: 50%;
+        .brain-logo {
+            width: 40px;
+            height: 40px;
         }
 
         .nav-links {
@@ -150,9 +148,9 @@
             gap: 16px;
         }
 
-        .hero-image img {
-            max-width: 420px;
-            border-radius: 20px;
+        .hero-image svg {
+            width: 380px;
+            height: auto;
         }
 
         /* Grid Cards */
@@ -371,7 +369,12 @@
     <div class="container">
         <nav>
             <a href="#" class="logo">
-                <img src="https://i.ibb.co/3m0q1v0/math-logo.png" alt="MathDecoded Logo" class="logo-img" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'36\' height=\'36\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'50\' fill=\'%23c85135\'/><text x=\'50\' y=\'65\' font-size=\'40\' text-anchor=\'middle\' fill=\'white\' font-family=\'serif\'>M</text></svg>'">
+                <svg class="brain-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M50 10 C30 10 15 25 15 45 C15 55 20 65 25 75 C30 85 40 90 50 90 C60 90 70 85 75 75 C80 65 85 55 85 45 C85 25 70 10 50 10 Z" fill="#d8c6a7" stroke="#2b2a29" stroke-width="4"/>
+                    <path d="M50 10 L50 90" stroke="#2b2a29" stroke-width="4"/>
+                    <text x="32" y="45" font-size="22" font-family="serif" font-weight="bold" fill="#2b2a29">∫</text>
+                    <text x="30" y="68" font-size="18" font-family="serif" fill="#2b2a29">α/β</text>
+                </svg>
                 MathDecoded
             </a>
             <div class="nav-links">
@@ -394,7 +397,20 @@
                 </div>
             </div>
             <div class="hero-image">
-                <img src="https://i.ibb.co/3m0q1v0/math-logo.png" alt="MathDecoded Brain Logo" onerror="this.style.display='none'">
+                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Αριστερό ημισφαίριο (Μπεζ - Θεωρία & Σύμβολα) -->
+                    <path d="M100 20 C60 20 30 50 30 90 C30 110 40 130 50 150 C60 170 80 180 100 180 Z" fill="#ecdcc1" stroke="#2b2a29" stroke-width="5"/>
+                    <text x="55" y="75" font-size="28" font-family="serif" font-weight="bold" fill="#2b2a29">∫</text>
+                    <text x="95" y="65" font-size="24" font-family="serif" fill="#2b2a29">√x</text>
+                    <text x="65" y="125" font-size="22" font-family="serif" fill="#2b2a29">α/β</text>
+                    <!-- Δεξιό ημισφαίριο (Patterns & Χρώματα) -->
+                    <path d="M100 20 C140 20 170 50 170 90 C170 110 160 130 150 150 C140 170 120 180 100 180 Z" fill="#2b2a29" stroke="#2b2a29" stroke-width="5"/>
+                    <circle cx="135" cy="70" r="18" fill="#c85135"/>
+                    <circle cx="135" cy="120" r="18" fill="#e09f3e"/>
+                    <circle cx="135" cy="155" r="12" fill="#335c67"/>
+                    <!-- Διαχωριστική γραμμή κέντρου -->
+                    <line x1="100" y1="20" x2="100" y2="180" stroke="#f6efe1" stroke-width="4"/>
+                </svg>
             </div>
         </section>
 
