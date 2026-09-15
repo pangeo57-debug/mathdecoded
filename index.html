@@ -1,590 +1,513 @@
 <!DOCTYPE html>
 <html lang="el">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MathDecoded — Ιδιαίτερα μαθήματα Μαθηματικών & προετοιμασία SAT</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #f6efe1;
-            --text-color: #2b2a29;
-            --accent-color: #c85135;
-            --card-bg: #ecdcc1;
-            --dark-bg: #2b2a29;
-            --font-heading: 'Playfair Display', serif;
-            --font-body: 'Inter', sans-serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MathDecoded — Ιδιωτικά μαθήματα Μαθηματικών &amp; προετοιμασία SAT</title>
+<meta name="description" content="Ιδιωτικά μαθήματα Μαθηματικών, προετοιμασία για SAT και Πανελλήνιες. Προσωπικό πρόγραμμα, εστιασμένο στην εξέταση.">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#EDE6D3">
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<!--
+  TODO πριν βγει live:
+  1. Μορφές μαθημάτων στην ενότητα #packages — πρόσθεσε κι άλλες αν θες (δες σχόλιο εκεί).
+  2. Διάρκεια μαθήματος SAT στην ενότητα #levels.
+  3. Μαρτυρίες μαθητών στην ενότητα #testimonials — προαιρετικό, αφαίρεσε αν δεν έχεις ακόμα.
+-->
 
-        body {
-            font-family: var(--font-body);
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-        }
+<style>
+  :root {
+    --cream: #EDE6D3;
+    --cream-2: #F6F1E5;
+    --cream-dark: #DBC8AA;
+    --ink: #1B1F24;
+    --ink-soft: #4A4740;
+    --teal: #436074;
+    --teal-deep: #2E4453;
+    --orange: #D08F4A;
+    --terracotta: #C06039;
+    --border: rgba(27,31,36,0.14);
+    --radius: 14px;
+    --serif: Georgia, 'Times New Roman', ui-serif, serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--cream);
+    line-height: 1.6;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+  section { padding: 5rem 1.5rem; }
+  .wrap { max-width: 1080px; margin: 0 auto; }
+  h1, h2, h3 { font-family: var(--serif); line-height: 1.15; margin: 0 0 0.6em; }
+  h2 { font-size: clamp(1.6rem, 3.4vw, 2.4rem); }
+  .eyebrow {
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    font-weight: 700;
+    margin-bottom: 0.8em;
+    display: block;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.85em 1.6em;
+    border-radius: 999px;
+    font-weight: 700;
+    text-decoration: none;
+    border: 2px solid transparent;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary { background: var(--terracotta); color: var(--cream-2); }
+  .btn-primary:hover { box-shadow: 0 6px 18px rgba(192,96,57,0.35); }
+  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--ink); }
+  .btn-ghost:hover { background: var(--ink); color: var(--cream); }
 
-        /* Navbar */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 24px 0;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-        }
+  /* header */
+  header {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(237,230,211,0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav {
+    max-width: 1080px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.8rem 1.5rem;
+  }
+  .brand { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+  .brand img { width: 40px; height: 40px; border-radius: 50%; }
+  .brand span { font-family: var(--serif); font-weight: 700; font-size: 1.25rem; letter-spacing: 0.02em; }
+  .nav-links { display: flex; gap: 1.6rem; font-weight: 600; font-size: 0.95rem; list-style: none; margin: 0; padding: 0; }
+  .nav-links a { text-decoration: none; }
+  .nav-links a:hover { color: var(--terracotta); }
+  .nav-cta { display: flex; align-items: center; gap: 0.8rem; }
+  .nav-toggle { display: none; }
+  @media (max-width: 760px) {
+    .nav-links { display: none; }
+  }
 
-        .logo {
-            font-family: var(--font-heading);
-            font-size: 24px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: var(--text-color);
-        }
+  /* hero */
+  .hero { padding-top: 4.5rem; }
+  .hero .wrap {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  @media (max-width: 860px) {
+    .hero .wrap { grid-template-columns: 1fr; text-align: center; }
+    .hero-art { order: -1; max-width: 280px; margin: 0 auto; }
+  }
+  .hero h1 { font-size: clamp(2.1rem, 5vw, 3.4rem); }
+  .hero p.lead { font-size: 1.15rem; color: var(--ink-soft); max-width: 46ch; }
+  @media (max-width: 860px) { .hero p.lead { margin-inline: auto; } }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.8rem; }
+  @media (max-width: 860px) { .hero-actions { justify-content: center; } }
+  .hero-art { position: relative; }
+  .hero-art img { border-radius: 50%; box-shadow: 0 20px 50px rgba(27,31,36,0.18); }
 
-        .logo-img {
-            width: 40px;
-            height: 40px;
-            object-fit: cover;
-            border-radius: 50%;
-        }
+  /* pill stats */
+  .stats {
+    display: flex; gap: 2.4rem; margin-top: 2.4rem; flex-wrap: wrap;
+  }
+  @media (max-width: 860px) { .stats { justify-content: center; } }
+  .stat b { display: block; font-family: var(--serif); font-size: 1.6rem; color: var(--teal-deep); }
+  .stat span { font-size: 0.85rem; color: var(--ink-soft); }
 
-        .nav-links {
-            display: flex;
-            gap: 32px;
-        }
+  /* sections with alt background */
+  .alt { background: var(--cream-2); }
+  .card {
+    background: var(--cream-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.8rem;
+  }
+  .alt .card { background: var(--cream); }
 
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-color);
-            font-weight: 500;
-            font-size: 15px;
-        }
+  /* why / features */
+  .grid-3 {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2.4rem;
+  }
+  @media (max-width: 780px) { .grid-3 { grid-template-columns: 1fr; } }
+  .feature .icon {
+    width: 46px; height: 46px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--teal); color: var(--cream-2);
+    font-size: 1.3rem; margin-bottom: 1rem;
+  }
+  .feature:nth-child(3n+2) .icon { background: var(--terracotta); }
+  .feature:nth-child(3n) .icon { background: var(--ink); }
 
-        .btn-primary {
-            background-color: var(--accent-color);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 500;
-            display: inline-block;
-            border: none;
-            cursor: pointer;
-            font-size: 15px;
-        }
+  /* how it works */
+  .steps { counter-reset: step; margin-top: 2.4rem; display: grid; gap: 1.4rem; }
+  .step { display: flex; gap: 1.2rem; align-items: flex-start; }
+  .step .num {
+    counter-increment: step; flex: none;
+    width: 42px; height: 42px; border-radius: 50%;
+    background: var(--cream-dark); color: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--serif); font-weight: 700;
+  }
+  .step .num::before { content: counter(step); }
 
-        .btn-outline {
-            border: 1px solid var(--text-color);
-            color: var(--text-color);
-            padding: 12px 24px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 500;
-            display: inline-block;
-        }
+  /* levels table */
+  .table-scroll { overflow-x: auto; margin-top: 2rem; }
+  .levels-table {
+    width: 100%; min-width: 480px; border-collapse: collapse;
+    background: var(--cream); border-radius: var(--radius); overflow: hidden;
+  }
+  .levels-table th, .levels-table td {
+    text-align: left; padding: 0.9em 1.2em; border-bottom: 1px solid var(--border);
+  }
+  .levels-table th {
+    font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--ink-soft); font-weight: 700;
+  }
+  .levels-table td:last-child { font-weight: 700; color: var(--teal-deep); white-space: nowrap; }
+  .levels-table tr:last-child td { border-bottom: none; }
 
-        /* Sections General */
-        section {
-            padding: 80px 0;
-        }
+  /* social / testimonials */
+  .ig-card {
+    display: flex; align-items: center; gap: 1.4rem; flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .ig-card .left { display: flex; align-items: center; gap: 1rem; }
+  .ig-card img { width: 56px; height: 56px; border-radius: 50%; }
 
-        .section-label {
-            color: var(--accent-color);
-            font-weight: 600;
-            font-size: 13px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-bottom: 16px;
-        }
+  .quote { font-style: italic; font-size: 1.05rem; }
+  .quote-who { margin-top: 0.8rem; font-weight: 700; font-style: normal; font-size: 0.9rem; color: var(--ink-soft); }
 
-        h2 {
-            font-family: var(--font-heading);
-            font-size: 42px;
-            line-height: 1.2;
-            margin-bottom: 40px;
-        }
+  /* contact */
+  #contact { background: var(--ink); color: var(--cream-2); }
+  #contact .eyebrow { color: var(--orange); }
+  #contact .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+  @media (max-width: 780px) { #contact .wrap { grid-template-columns: 1fr; } }
+  .form { display: grid; gap: 1rem; }
+  .form label { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3em; display: block; }
+  .form input, .form textarea {
+    width: 100%; padding: 0.75em 0.9em; border-radius: 10px;
+    border: 1px solid rgba(246,241,229,0.25);
+    background: rgba(246,241,229,0.06); color: var(--cream-2);
+    font-family: var(--sans); font-size: 1rem;
+  }
+  .form input::placeholder, .form textarea::placeholder { color: rgba(246,241,229,0.45); }
+  .contact-links { display: grid; gap: 1rem; margin-top: 1.6rem; }
+  .contact-links a { text-decoration: none; display: flex; align-items: center; gap: 0.7em; font-weight: 600; }
+  .contact-links a:hover { color: var(--orange); }
+  #form-status { margin: 0; font-size: 0.9rem; min-height: 1.2em; }
+  #form-status.ok { color: #7FBF8E; }
+  #form-status.err { color: #E08A6E; }
+  .form button[disabled] { opacity: 0.6; cursor: not-allowed; }
 
-        /* Hero */
-        .hero {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 60px 0 100px;
-            gap: 40px;
-        }
-
-        .hero-content {
-            max-width: 640px;
-        }
-
-        .hero h1 {
-            font-family: var(--font-heading);
-            font-size: 52px;
-            line-height: 1.15;
-            margin-bottom: 24px;
-        }
-
-        .hero p {
-            font-size: 17px;
-            margin-bottom: 36px;
-            color: #4a4846;
-            line-height: 1.7;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 16px;
-        }
-
-        .hero-image img {
-            max-width: 380px;
-            width: 100%;
-            height: auto;
-            border-radius: 20px;
-        }
-
-        /* Grid Cards */
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-        }
-
-        .card {
-            background-color: var(--card-bg);
-            padding: 40px 32px;
-            border-radius: 16px;
-        }
-
-        .card-icon {
-            font-size: 24px;
-            margin-bottom: 24px;
-            background: #d8c6a7;
-            width: 48px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 12px;
-        }
-
-        .card h3 {
-            font-family: var(--font-heading);
-            font-size: 20px;
-            margin-bottom: 16px;
-        }
-
-        .card p {
-            font-size: 15px;
-            color: #4a4846;
-            line-height: 1.6;
-        }
-
-        /* Process */
-        .process-list {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .process-item {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-        }
-
-        .process-number {
-            background-color: var(--card-bg);
-            color: var(--text-color);
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            font-weight: 600;
-            flex-shrink: 0;
-        }
-
-        /* Table */
-        .classes-table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: var(--card-bg);
-            border-radius: 16px;
-            overflow: hidden;
-        }
-
-        .classes-table th, .classes-table td {
-            padding: 20px 32px;
-            text-align: left;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-        }
-
-        .classes-table th {
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #666;
-            font-weight: 600;
-        }
-
-        /* Contact Section */
-        .contact-section {
-            background-color: var(--dark-bg);
-            color: white;
-            padding: 100px 0;
-            margin-top: 40px;
-            border-radius: 32px 32px 0 0;
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-        }
-
-        .contact-info h2 {
-            color: white;
-        }
-
-        .contact-info p {
-            color: #a0a0a0;
-            margin-bottom: 40px;
-            font-size: 16px;
-            line-height: 1.7;
-        }
-
-        .contact-details p {
-            margin-bottom: 12px;
-            font-weight: 500;
-            color: #e0e0e0;
-        }
-
-        .contact-form {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 14px;
-            font-weight: 500;
-            color: #e0e0e0;
-        }
-
-        .form-group input, .form-group textarea {
-            width: 100%;
-            padding: 16px;
-            background-color: transparent;
-            border: 1px solid #4a4846;
-            border-radius: 8px;
-            color: white;
-            font-family: var(--font-body);
-            font-size: 15px;
-        }
-
-        .form-group input:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: var(--accent-color);
-        }
-
-        .form-group textarea {
-            height: 120px;
-            resize: vertical;
-        }
-
-        .contact-form .btn-primary {
-            width: 100%;
-            margin-top: 10px;
-        }
-
-        /* Footer */
-        .footer-community {
-            background-color: var(--card-bg);
-            padding: 40px;
-            border-radius: 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 40px 0;
-            color: var(--text-color);
-        }
-
-        .community-info {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .community-text h4 {
-            font-size: 16px;
-            margin-bottom: 4px;
-        }
-
-        .community-text p {
-            color: #666;
-            font-size: 14px;
-        }
-
-        .copyright {
-            text-align: center;
-            color: #888;
-            font-size: 13px;
-            padding-bottom: 40px;
-        }
-
-        @media (max-width: 768px) {
-            .hero, .contact-grid {
-                flex-direction: column;
-            }
-            .grid-3 {
-                grid-template-columns: 1fr;
-            }
-            .nav-links {
-                display: none;
-            }
-            h1 {
-                font-size: 38px !important;
-            }
-            h2 {
-                font-size: 30px !important;
-            }
-        }
-    </style>
+  footer {
+    text-align: center; padding: 2.4rem 1.5rem; font-size: 0.85rem; color: var(--ink-soft);
+  }
+</style>
 </head>
 <body>
 
-    <div class="container">
-        <nav>
-            <a href="#" class="logo">
-                <img src="brain-logo.png" alt="MathDecoded Logo" class="logo-img">
-                MathDecoded
-            </a>
-            <div class="nav-links">
-                <a href="#why">Μαθήματα</a>
-                <a href="#classes">Τάξεις</a>
-                <a href="#formats">Μορφές</a>
-                <a href="#contact">Επικοινωνία</a>
-            </div>
-            <a href="#contact" class="btn-primary">Επικοινωνήστε μαζί μας</a>
-        </nav>
-
-        <section class="hero">
-            <div class="hero-content">
-                <div class="section-label">ΙΔΙΑΙΤΕΡΑ ΜΑΘΗΜΑΤΑ ΜΑΘΗΜΑΤΙΚΩΝ</div>
-                <h1>Μαθηματικά Λυκείου & Προετοιμασία SAT</h1>
-                <p>Ιδιαίτερα μαθήματα Μαθηματικών για μαθητές Γυμνασίου και Λυκείου, με έμφαση στις Πανελλήνιες Εξετάσεις και το SAT Math. Στοχευμένη διδασκαλία, κάλυψη θεωρίας και εξάσκηση σε απαιτητικά θέματα, ανάλογα με τον στόχο και το επίπεδο του κάθε μαθητή.</p>
-                <div class="hero-buttons">
-                    <a href="#contact" class="btn-primary">Επικοινωνήστε μαζί μας</a>
-                    <a href="https://instagram.com/math__decoded" target="_blank" class="btn-outline">Instagram @math__decoded</a>
-                </div>
-            </div>
-            <div class="hero-image">
-                <img src="brain-logo.png" alt="MathDecoded Brain Logo">
-            </div>
-        </section>
-
-        <section id="why">
-            <div class="section-label">ΤΙ ΠΑΡΕΧΟΥΜΕ</div>
-            <h2>Οργάνωση και μεθοδική προετοιμασία.</h2>
-            
-            <div class="grid-3">
-                <div class="card">
-                    <div class="card-icon">🎯</div>
-                    <h3>Κάλυψη Θεωρίας</h3>
-                    <p>Σαφής κατανόηση των μαθηματικών εννοιών και της ύλης, χωρίς κενά και αμφιβολίες.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">🧠</div>
-                    <h3>Εντοπισμός Κενών</h3>
-                    <p>Διάγνωση αδυναμιών από προηγούμενες χρονιές και σταδιακή αποκατάστασή τους.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">📈</div>
-                    <h3>Επαναλήψεις & Test</h3>
-                    <p>Τακτικά διαγωνίσματα προσομοίωσης για εξοικείωση με τον χρόνο και τις συνθήκες εξέτασης.</p>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <div class="section-label">ΔΙΑΔΙΚΑΣΙΑ</div>
-            <h2>Πώς ξεκινάμε</h2>
-            
-            <div class="process-list">
-                <div class="process-item">
-                    <div class="process-number">1</div>
-                    <p><strong>Επικοινωνία</strong> — συζητάμε τις ανάγκες, την τάξη και τον στόχο του μαθητή.</p>
-                </div>
-                <div class="process-item">
-                    <div class="process-number">2</div>
-                    <p><strong>Αξιολόγηση</strong> — βλέπουμε πού βρίσκεται ο μαθητής και τι χρειάζεται βελτίωση.</p>
-                </div>
-                <div class="process-item">
-                    <div class="process-number">3</div>
-                    <p><strong>Μαθήματα</strong> — εβδομαδιαίες συναντήσεις με σταθερό πρόγραμμα και ασκήσεις.</p>
-                </div>
-                <div class="process-item">
-                    <div class="process-number">4</div>
-                    <p><strong>Έλεγχος προόδου</strong> — επαναλήψεις και προσομοιώσεις εξετάσεων.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="formats">
-            <div class="section-label">ΜΟΡΦΕΣ ΜΑΘΗΜΑΤΩΝ</div>
-            <h2>Επιλογές διδασκαλίας</h2>
-            
-            <div class="grid-3">
-                <div class="card">
-                    <div class="card-icon">👤</div>
-                    <h3>Ατομικά (1-on-1)</h3>
-                    <p>Μαθήματα κομμένα και ραμμένα στις ανάγκες και τον ρυθμό του συγκεκριμένου μαθητή.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">👥</div>
-                    <h3>Ολιγομελή Τμήματα</h3>
-                    <p>Μικρές ομάδες μαθητών με αντίστοιχό επίπεδο, για κοινή προετοιμασία.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">📝</div>
-                    <h3>Σημειώσεις & Υλικό</h3>
-                    <p>Τυπολόγια και ασκήσεις επιλεγμένες ειδικά για τις απαιτήσεις των εξετάσεων.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="classes">
-            <div class="section-label">ΩΡΕΣ ΜΑΘΗΜΑΤΩΝ</div>
-            <h2>Διάρκεια ανά τάξη</h2>
-            
-            <table class="classes-table">
-                <thead>
-                    <tr>
-                        <th>ΤΑΞΗ</th>
-                        <th>ΜΑΘΗΜΑ</th>
-                        <th>ΔΙΑΡΚΕΙΑ</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Γυμνάσιο Α'</td>
-                        <td>—</td>
-                        <td>1,5 ώρα</td>
-                    </tr>
-                    <tr>
-                        <td>Γυμνάσιο Β'</td>
-                        <td>—</td>
-                        <td>1,5 ώρα</td>
-                    </tr>
-                    <tr>
-                        <td>Γυμνάσιο Γ'</td>
-                        <td>—</td>
-                        <td>2 ώρες</td>
-                    </tr>
-                    <tr>
-                        <td>Λύκειο Α'</td>
-                        <td>Άλγεβρα</td>
-                        <td>2 ώρες</td>
-                    </tr>
-                    <tr>
-                        <td>Λύκειο Α'</td>
-                        <td>Γεωμετρία</td>
-                        <td>1 ώρα</td>
-                    </tr>
-                    <tr>
-                        <td>Λύκειο Β'</td>
-                        <td>Άλγεβρα</td>
-                        <td>2 ώρες</td>
-                    </tr>
-                    <tr>
-                        <td>Λύκειο Β'</td>
-                        <td>Μαθηματικά Προσανατολισμού</td>
-                        <td>2 ώρες</td>
-                    </tr>
-                    <tr>
-                        <td>Λύκειο Γ'</td>
-                        <td>Μαθηματικά Προσανατολισμού</td>
-                        <td>4-4,5 ώρες</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
+<header>
+  <nav class="nav">
+    <a class="brand" href="#top">
+      <img src="icon-192.png" alt="MathDecoded">
+      <span>MathDecoded</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#why">Γιατί MathDecoded</a></li>
+      <li><a href="#levels">Τάξεις</a></li>
+      <li><a href="#packages">Πακέτα</a></li>
+      <li><a href="grifoi.html">Γρίφοι</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a class="btn btn-primary" href="#contact">Κλείσε γνωριμία</a>
     </div>
+  </nav>
+</header>
 
-    <section id="contact" class="contact-section">
-        <div class="container">
-            <div class="contact-grid">
-                <div class="contact-info">
-                    <div class="section-label">ΕΠΙΚΟΙΝΩΝΙΑ</div>
-                    <h2>Στείλτε μας μήνυμα</h2>
-                    <p>Συμπληρώστε τα στοιχεία σας και τον στόχο σας (Πανελλήνιες ή SAT) για να επικοινωνήσουμε άμεσα μαζί σας.</p>
-                    
-                    <div class="contact-details">
-                        <p>Instagram — @math__decoded</p>
-                        <p>Email — pangeo57@yahoo.gr</p>
-                    </div>
-                </div>
+<main id="top">
 
-                <!-- Η φόρμα συνδεδεμένη με το Formspree -->
-                <form class="contact-form" action="https://formspree.io/f/xyeyvzga" method="POST">
-                    <div class="form-group">
-                        <label for="name">Ονοματεπώνυμο</label>
-                        <input type="text" id="name" name="name" placeholder="Ονοματεπώνυμο" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" placeholder="Email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Τηλέφωνο</label>
-                        <input type="tel" id="phone" name="phone" placeholder="Τηλέφωνο επικοινωνίας">
-                    </div>
-                    <div class="form-group">
-                        <label for="goal">Τάξη / Στόχος</label>
-                        <input type="text" id="goal" name="goal" placeholder="π.χ. Γ' Λυκείου - Προσανατολισμός" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Μήνυμα</label>
-                        <textarea id="message" name="message" placeholder="Γράψτε τις απορίες ή τις ανάγκες σας" required></textarea>
-                    </div>
-                    <button type="submit" class="btn-primary">Αποστολή</button>
-                </form>
-            </div>
-
-            <div class="footer-community">
-                <div class="community-info">
-                    <div class="card-icon" style="margin-bottom:0;">🧠</div>
-                    <div class="community-text">
-                        <h4>@math__decoded</h4>
-                        <p>Μαθηματικά, SAT & Πανελλήνιες</p>
-                    </div>
-                </div>
-                <a href="https://instagram.com/math__decoded" target="_blank" class="btn-primary">Instagram</a>
-            </div>
-
-            <p class="copyright">© 2026 MathDecoded. Ιδιαίτερα μαθήματα Μαθηματικών - SAT - Πανελλήνιες.</p>
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">Ιδιωτικά μαθήματα Μαθηματικών</span>
+        <h1>Τα μαθηματικά, αποκωδικοποιημένα.</h1>
+        <p class="lead">
+          Προετοιμασία για το <strong>SAT Math</strong> (και τις Πανελλήνιες) με προσωπικό πρόγραμμα,
+          φτιαγμένο γύρω από το πώς σκέφτεσαι — όχι γύρω από ένα τυποποιημένο βιβλίο ασκήσεων.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#contact">Κλείσε δωρεάν γνωριμία 20’</a>
+          <a class="btn btn-ghost" href="https://www.instagram.com/math__decoded" target="_blank" rel="noopener">
+            Ακολούθησε @math__decoded
+          </a>
+          <a class="btn btn-ghost" href="grifoi.html">Δες τους γρίφους 🧩</a>
         </div>
-    </section>
+        <div class="stats">
+          <div class="stat"><b>10+ χρόνια</b><span>εμπειρία, 6 από αυτά σε φροντιστήρια</span></div>
+          <div class="stat"><b>1-προς-1</b><span>εξατομικευμένα μαθήματα</span></div>
+          <div class="stat"><b>SAT · Πανελλήνιες</b><span>εστίαση στην εξέταση</span></div>
+          <div class="stat"><b>Online ή δια ζώσης</b><span>ό,τι σε βολεύει</span></div>
+        </div>
+      </div>
+      <div class="hero-art">
+        <img src="icon-512.png" alt="Λογότυπο MathDecoded — μισός εγκέφαλος με τύπους, μισός με γεωμετρικό μοτίβο">
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">Επικοινωνία</span>
+        <h2>Κλείσε τη δωρεάν γνωριμία σου</h2>
+        <p>Στείλε λίγα λόγια για τον στόχο σου (SAT / Πανελλήνιες, ημερομηνία εξέτασης, τρέχον επίπεδο) και θα σου απαντήσω σύντομα.</p>
+        <div class="contact-links">
+          <a href="https://www.instagram.com/math__decoded" target="_blank" rel="noopener">Instagram — @math__decoded</a>
+          <a href="mailto:pangeo57@yahoo.gr">Email — pangeo57@yahoo.gr</a>
+        </div>
+      </div>
+      <!-- Η φόρμα στέλνει μέσω Formspree (ήδη συνδεδεμένο με pangeo57@yahoo.gr). -->
+      <form class="form" id="contact-form" action="https://formspree.io/f/xyeyvzga" method="POST">
+        <input type="hidden" name="_subject" value="Νέο μήνυμα από το MathDecoded site">
+        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+        <div>
+          <label for="name">Όνομα</label>
+          <input id="name" name="Όνομα" type="text" placeholder="Το όνομά σου" required>
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input id="email" name="Email" type="email" placeholder="you@example.com" required>
+        </div>
+        <div>
+          <label for="phone">Τηλέφωνο</label>
+          <input id="phone" name="Τηλέφωνο" type="tel" placeholder="προαιρετικό">
+        </div>
+        <div>
+          <label for="goal">Στόχος</label>
+          <input id="goal" name="Στόχος" type="text" placeholder="π.χ. SAT Math, εξέταση Μάιος 2027">
+        </div>
+        <div>
+          <label for="message">Μήνυμα</label>
+          <textarea id="message" name="Μήνυμα" rows="4" placeholder="Πες μου λίγα λόγια για το πού βρίσκεσαι τώρα"></textarea>
+        </div>
+        <button class="btn btn-primary" type="submit">Στείλε μήνυμα</button>
+        <p id="form-status" role="status"></p>
+      </form>
+    </div>
+  </section>
+
+  <section id="why" class="alt">
+    <div class="wrap">
+      <span class="eyebrow">Γιατί MathDecoded</span>
+      <h2>Δεν διαβάζουμε απλά ύλη — αποκωδικοποιούμε την εξέταση.</h2>
+      <div class="grid-3">
+        <div class="card feature">
+          <div class="icon">🎯</div>
+          <h3>Εστιασμένο στην εξέταση</h3>
+          <p>Δουλεύουμε πάνω σε πραγματικά θέματα SAT / Πανελλήνιων, όχι γενικές ασκήσεις — μαθαίνεις τα patterns που επαναλαμβάνονται.</p>
+        </div>
+        <div class="card feature">
+          <div class="icon">🧠</div>
+          <h3>Προσωπικό πρόγραμμα</h3>
+          <p>Ξεκινάμε από διάγνωση κενών και χτίζουμε πλάνο γύρω από το δικό σου tempo, όχι ένα σταθερό πρόγραμμα για όλους.</p>
+        </div>
+        <div class="card feature">
+          <div class="icon">📈</div>
+          <h3>Ορατή πρόοδος</h3>
+          <p>Τακτικά mock tests και καταγραφή επίδοσης, ώστε να ξέρεις ακριβώς πού βελτιώνεσαι πριν την εξέταση.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <span class="eyebrow">Πώς δουλεύουμε</span>
+      <h2>Από την πρώτη γνωριμία μέχρι την εξέταση</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="num"></div>
+          <div><strong>Δωρεάν γνωριμία (20’)</strong> — μιλάμε για στόχο, deadline εξέτασης και τρέχον επίπεδο.</div>
+        </div>
+        <div class="step">
+          <div class="num"></div>
+          <div><strong>Διαγνωστικό test</strong> — εντοπίζουμε ακριβώς ποια κεφάλαια/τύποι ερωτήσεων χρειάζονται δουλειά.</div>
+        </div>
+        <div class="step">
+          <div class="num"></div>
+          <div><strong>Πρόγραμμα μαθημάτων</strong> — εβδομαδιαία μαθήματα 1-προς-1, online ή δια ζώσης, με ασκήσεις ανάμεσα.</div>
+        </div>
+        <div class="step">
+          <div class="num"></div>
+          <div><strong>Mock tests &amp; προσαρμογή</strong> — προσομοιώσεις υπό συνθήκες εξέτασης, με review μετά από κάθε μία.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="levels" class="alt">
+    <div class="wrap">
+      <span class="eyebrow">Τάξεις &amp; Μαθήματα</span>
+      <h2>Διάρκεια μαθήματος ανά τάξη</h2>
+      <div class="table-scroll">
+        <table class="levels-table">
+          <thead>
+            <tr>
+              <th>Τάξη</th>
+              <th>Μάθημα</th>
+              <th>Διάρκεια</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Γυμνάσιο Α'</td>
+              <td>—</td>
+              <td>1,5 ώρα</td>
+            </tr>
+            <tr>
+              <td>Γυμνάσιο Β'</td>
+              <td>—</td>
+              <td>1,5 ώρα</td>
+            </tr>
+            <tr>
+              <td>Γυμνάσιο Γ'</td>
+              <td>—</td>
+              <td>2 ώρες</td>
+            </tr>
+            <tr>
+              <td>Λύκειο Α'</td>
+              <td>Άλγεβρα</td>
+              <td>2 ώρες</td>
+            </tr>
+            <tr>
+              <td>Λύκειο Α'</td>
+              <td>Γεωμετρία</td>
+              <td>1 ώρα</td>
+            </tr>
+            <tr>
+              <td>Λύκειο Β'</td>
+              <td>Άλγεβρα</td>
+              <td>2 ώρες</td>
+            </tr>
+            <tr>
+              <td>Λύκειο Β'</td>
+              <td>Μαθηματικά Προσανατολισμού</td>
+              <td>2 ώρες</td>
+            </tr>
+            <tr>
+              <td>Λύκειο Γ' (Πανελλήνιες)</td>
+              <td>—</td>
+              <td>4–4,5 ώρες</td>
+            </tr>
+            <!-- TODO: πρόσθεσε γραμμή SAT όταν οριστεί η διάρκεια -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="packages">
+    <div class="wrap">
+      <span class="eyebrow">Μορφές μαθημάτων</span>
+      <h2>Ατομικά, ομαδικά, και δικό σου υλικό</h2>
+      <!-- TODO: πρόσθεσε κι άλλα αν θες (π.χ. online εργαστήρια, επαναληπτικά πριν τις εξετάσεις) -->
+      <div class="grid-3">
+        <div class="card feature">
+          <div class="icon">👤</div>
+          <h3>Ατομικά μαθήματα</h3>
+          <p>1-προς-1, στο δικό σου tempo — όλη η ώρα του μαθήματος εστιάζει στα δικά σου κενά.</p>
+        </div>
+        <div class="card feature">
+          <div class="icon">👥</div>
+          <h3>Ομαδικά μαθήματα</h3>
+          <p>Μικρές ομάδες συμμαθητών με κοντινό επίπεδο — ίδια μεθοδολογία, χαμηλότερο κόστος ανά μάθημα.</p>
+        </div>
+        <div class="card feature">
+          <div class="icon">📝</div>
+          <h3>Προσωπικές σημειώσεις</h3>
+          <p>Υλικό φτιαγμένο ειδικά για το επίπεδο και τους στόχους σου — όχι γενικό βιβλίο ασκήσεων.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="testimonials" class="alt">
+    <div class="wrap">
+      <span class="eyebrow">Κοινότητα</span>
+      <div class="card ig-card">
+        <div class="left">
+          <img src="icon-192.png" alt="MathDecoded στο Instagram">
+          <div>
+            <strong>@math__decoded</strong>
+            <div style="color:var(--ink-soft); font-size:0.9rem;">Tips, quiz και κόλπα για μαθηματικά, SAT &amp; Πανελλήνιες</div>
+          </div>
+        </div>
+        <a class="btn btn-primary" href="https://www.instagram.com/math__decoded" target="_blank" rel="noopener">Δες το Instagram</a>
+      </div>
+      <!-- TODO: πρόσθεσε πραγματικές μαρτυρίες μαθητών εδώ όταν υπάρξουν -->
+    </div>
+  </section>
+
+
+</main>
+
+<footer>
+  &copy; <span id="year"></span> MathDecoded. Ιδιωτικά μαθήματα Μαθηματικών · SAT · Πανελλήνιες.
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  }
+
+  const contactForm = document.getElementById('contact-form');
+  const formStatus = document.getElementById('form-status');
+  contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const submitBtn = contactForm.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    formStatus.textContent = 'Αποστολή...';
+    formStatus.className = '';
+    try {
+      const res = await fetch(contactForm.action, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: new FormData(contactForm),
+      });
+      if (res.ok) {
+        formStatus.textContent = 'Ευχαριστώ! Θα σου απαντήσω σύντομα.';
+        formStatus.className = 'ok';
+        contactForm.reset();
+      } else {
+        const data = await res.json().catch(() => ({}));
+        const msg = data.errors ? data.errors.map(x => x.message).join(', ') : 'Αποτυχία αποστολής';
+        throw new Error(msg);
+      }
+    } catch (err) {
+      formStatus.textContent = 'Κάτι πήγε στραβά — στείλε email απευθείας στο pangeo57@yahoo.gr.';
+      formStatus.className = 'err';
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+</script>
 
 </body>
 </html>
