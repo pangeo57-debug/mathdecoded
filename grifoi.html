@@ -158,6 +158,22 @@
   footer {
     text-align: center; padding: 2.4rem 1.5rem; font-size: 0.85rem; color: var(--ink-soft);
   }
+  footer a { color: var(--teal-deep); }
+
+  .cookie-banner {
+    position: fixed; left: 16px; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    z-index: 40; max-width: 420px; margin-inline: auto;
+    background: var(--ink); color: var(--cream-2);
+    border-radius: var(--radius); padding: 1.2rem 1.3rem;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    display: flex; flex-direction: column; gap: 0.7rem;
+  }
+  .cookie-banner[hidden] { display: none; }
+  .cookie-banner p { margin: 0; font-size: 0.88rem; }
+  .cookie-actions { display: flex; gap: 0.6rem; }
+  .cookie-actions .btn-ghost { color: var(--cream-2); border-color: rgba(246,241,229,0.4); }
+  .cookie-actions .btn-ghost:hover { background: rgba(246,241,229,0.12); color: var(--cream-2); }
+  .cookie-link { font-size: 0.78rem; color: rgba(246,241,229,0.6); text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -210,7 +226,17 @@
 
 <footer>
   &copy; <span id="year"></span> MathDecoded. Ιδιωτικά μαθήματα Μαθηματικών · SAT · Πανελλήνιες.
+  · <a href="privacy.html">Πολιτική Απορρήτου</a>
 </footer>
+
+<div id="cookie-banner" class="cookie-banner" hidden>
+  <p>Χρησιμοποιούμε Google Analytics για να δούμε πόσος κόσμος επισκέπτεται το site. Συμφωνείς;</p>
+  <div class="cookie-actions">
+    <button class="btn btn-ghost btn-small" id="cookie-decline" type="button">Όχι</button>
+    <button class="btn btn-primary btn-small" id="cookie-accept" type="button">Εντάξει</button>
+  </div>
+  <a href="privacy.html" class="cookie-link">Περισσότερα</a>
+</div>
 
 <script>
   document.getElementById('year').textContent = new Date().getFullYear();
@@ -325,6 +351,42 @@
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js').catch(() => {});
   }
+
+  // Google Analytics — only loads after the visitor accepts the cookie banner.
+  const GA_MEASUREMENT_ID = 'G-XXXXXXXXXX';
+
+  function loadAnalytics() {
+    if (!GA_MEASUREMENT_ID || GA_MEASUREMENT_ID === 'G-XXXXXXXXXX') return;
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_MEASUREMENT_ID;
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', GA_MEASUREMENT_ID, { anonymize_ip: true });
+  }
+
+  function getConsent() { try { return localStorage.getItem('mathdecoded-cookie-consent'); } catch (e) { return null; } }
+  function setConsent(v) { try { localStorage.setItem('mathdecoded-cookie-consent', v); } catch (e) {} }
+
+  const cookieBanner = document.getElementById('cookie-banner');
+  const cookieChoice = getConsent();
+  if (cookieChoice === 'accepted') {
+    loadAnalytics();
+  } else if (!cookieChoice) {
+    cookieBanner.hidden = false;
+  }
+  document.getElementById('cookie-accept').addEventListener('click', () => {
+    setConsent('accepted');
+    cookieBanner.hidden = true;
+    loadAnalytics();
+  });
+  document.getElementById('cookie-decline').addEventListener('click', () => {
+    setConsent('declined');
+    cookieBanner.hidden = true;
+  });
 </script>
 
 </body>

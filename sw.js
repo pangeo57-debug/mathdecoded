@@ -1,5 +1,8 @@
 // MathDecoded service worker — network-first, falling back to cache when offline.
-const CACHE = 'mathdecoded-v1';
+// Online visitors always get the fresh network response; CACHE only matters for
+// the offline fallback and for clearing old cached files. Bump it (v3, v4, ...)
+// whenever you want to force-clear stale cached files from returning visitors.
+const CACHE = 'mathdecoded-v2';
 
 self.addEventListener('install', () => {
   self.skipWaiting();
