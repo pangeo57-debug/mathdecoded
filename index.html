@@ -357,6 +357,10 @@
           <label for="message">Μήνυμα</label>
           <textarea id="message" name="Μήνυμα" rows="4" placeholder="Πες μου λίγα λόγια για το πού βρίσκεσαι τώρα"></textarea>
         </div>
+        <div>
+          <label for="captcha" id="captcha-label">Πόσο κάνει ...;</label>
+          <input id="captcha" name="captcha-answer" type="text" inputmode="numeric" autocomplete="off" placeholder="απάντηση" required>
+        </div>
         <button class="btn btn-primary" type="submit">Στείλε μήνυμα</button>
         <p id="form-status" role="status"></p>
       </form>
@@ -539,9 +543,30 @@
 
   const contactForm = document.getElementById('contact-form');
   const formStatus = document.getElementById('form-status');
+  const captchaInput = document.getElementById('captcha');
+  const captchaLabel = document.getElementById('captcha-label');
+  let captchaAnswer = 0;
+
+  function newCaptcha() {
+    const a = 1 + Math.floor(Math.random() * 9);
+    const b = 1 + Math.floor(Math.random() * 9);
+    captchaAnswer = a + b;
+    captchaLabel.textContent = `Πόσο κάνει ${a} + ${b};`;
+    captchaInput.value = '';
+  }
+  newCaptcha();
+
   contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const submitBtn = contactForm.querySelector('button[type="submit"]');
+
+    if (parseInt(captchaInput.value, 10) !== captchaAnswer) {
+      formStatus.textContent = 'Λάθος απάντηση στην ερώτηση επιβεβαίωσης — δοκίμασε ξανά.';
+      formStatus.className = 'err';
+      newCaptcha();
+      return;
+    }
+
     submitBtn.disabled = true;
     formStatus.textContent = 'Αποστολή...';
     formStatus.className = '';
@@ -555,6 +580,7 @@
         formStatus.textContent = 'Ευχαριστώ! Θα σου απαντήσω σύντομα.';
         formStatus.className = 'ok';
         contactForm.reset();
+        newCaptcha();
       } else {
         const data = await res.json().catch(() => ({}));
         const msg = data.errors ? data.errors.map(x => x.message).join(', ') : 'Αποτυχία αποστολής';
