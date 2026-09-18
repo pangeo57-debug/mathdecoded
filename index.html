@@ -187,6 +187,17 @@
   .feature:nth-child(3n+2) .icon { background: var(--terracotta); }
   .feature:nth-child(3n) .icon { background: var(--ink); }
 
+  /* study guides */
+  .grade-chips { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 1.6rem 0 2rem; }
+  .chip {
+    background: var(--cream-dark); color: var(--ink);
+    font-size: 0.85rem; font-weight: 600;
+    padding: 0.5em 1em; border-radius: 999px;
+  }
+  .callout { border: 2px solid var(--terracotta); }
+  .callout h3 { margin-top: 0; }
+  .callout .btn { margin-top: 0.6rem; }
+
   /* how it works */
   .steps { counter-reset: step; margin-top: 2.4rem; display: grid; gap: 1.4rem; }
   .step { display: flex; gap: 1.2rem; align-items: flex-start; }
@@ -501,7 +512,32 @@
     </div>
   </section>
 
-  <section id="testimonials" class="alt">
+  <section id="study-guides" class="alt">
+    <div class="wrap">
+      <span class="eyebrow">Βοηθήματα</span>
+      <h2>Προσωπικά βοηθήματα, φτιαγμένα ανά τάξη</h2>
+      <p style="color:var(--ink-soft); max-width:60ch;">
+        Πέρα από τα μαθήματα, φτιάχνω δικά μου βοηθήματα — θεωρία, τυπολόγια
+        και λυμένα θέματα, προσαρμοσμένα στην ύλη κάθε τάξης. Διατίθενται
+        ξεχωριστά, κατόπιν παραγγελίας.
+      </p>
+      <div class="grade-chips">
+        <span class="chip">Γυμνάσιο Α'</span>
+        <span class="chip">Γυμνάσιο Β'</span>
+        <span class="chip">Γυμνάσιο Γ'</span>
+        <span class="chip">Λύκειο Α'</span>
+        <span class="chip">Λύκειο Β'</span>
+        <span class="chip">Λύκειο Γ' (Πανελλήνιες)</span>
+      </div>
+      <div class="card callout">
+        <h3>Θες περίληψη βιβλίου;</h3>
+        <p>Ζήτησέ μου μια συνοπτική περίληψη του σχολικού βιβλίου σου — τα βασικά σημεία, χωρίς περιττή ύλη, ιδανικό για γρήγορη επανάληψη πριν το διαγώνισμα.</p>
+        <a class="btn btn-primary" href="#contact">Ζήτησέ το</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="testimonials">
     <div class="wrap">
       <span class="eyebrow">Κοινότητα</span>
       <div class="card ig-card">
