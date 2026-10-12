@@ -48,3 +48,57 @@ requests/μέρα).
 
 Στο `contact-proxy.js`, άλλαξε `MAX_REQUESTS` και `WINDOW_SECONDS` στην
 κορυφή του αρχείου, μετά ξανα-deploy (Edit code → Save and Deploy).
+
+---
+
+# AI εξήγηση λάθους μαθητή (askiseis.html)
+
+Δεύτερος Worker (`explain-mistake.js`) — στις σελίδες ασκήσεων
+(π.χ. `askiseis-b-gym-kef1-eksisoseis.html`), όταν ο μαθητής απαντήσει
+λάθος, μπορεί να πατήσει **«Ρώτα τον βοηθό AI»** και να πάρει σύντομη
+εξήγηση του πιθανού λάθους σκεπτικού του, μέσω του Claude API.
+
+## Deploy (ίδια λογική με τον contact proxy)
+
+1. **KV namespace** για rate limiting (προαιρετικό αλλά συστήνεται, ώστε
+   να μην αδειάσει το API budget από κατάχρηση): φτιάξε ένα δεύτερο KV
+   namespace, π.χ. `EXPLAIN_RATE_LIMIT_KV` (μπορείς να ξαναχρησιμοποιήσεις
+   το ίδιο namespace με τον contact proxy αν θέλεις, απλά keys διαφέρουν).
+
+2. **Δημιουργία του Worker**:
+   - **Workers & Pages** → **Create** → **Create Worker**
+   - Όνομα: π.χ. `mathdecoded-explain`
+   - Deploy (default template)
+
+3. **Βάλε τον κώδικα**:
+   - Worker → **Edit code** → επικόλλησε όλο το `explain-mistake.js`
+   - Άλλαξε το `ALLOWED_ORIGIN` στην κορυφή στο πραγματικό domain του site
+   - **Save and Deploy**
+
+4. **Σύνδεσε το KV namespace**:
+   - Worker → **Settings** → **Variables** → **KV Namespace Bindings** → **Add binding**
+   - Variable name: `RATE_LIMIT_KV` (να ταιριάζει με τον κώδικα)
+   - KV namespace: αυτό από το βήμα 1
+
+5. **Βάλε το Anthropic API key ως secret** (όχι σαν απλή μεταβλητή —
+   πρέπει να είναι "Encrypt" για να μην είναι ορατό σε κανέναν):
+   - Worker → **Settings** → **Variables** → **Environment Variables** → **Add variable**
+   - Name: `ANTHROPIC_API_KEY`, Value: το κλειδί σου από
+     [console.anthropic.com](https://console.anthropic.com), και πάτα **Encrypt**
+   - Save and Deploy
+
+6. **Πάρε το URL** του Worker (π.χ.
+   `https://mathdecoded-explain.<username>.workers.dev`) και βάλτο στο
+   `askiseis-b-gym-kef1-eksisoseis.html`, στη μεταβλητή `EXPLAIN_ENDPOINT`
+   στην αρχή του `<script>` (κοντά στο τέλος του αρχείου).
+
+## Κόστος
+
+Μοντέλο `claude-haiku-5-5` (το πιο οικονομικό), `max_tokens: 300` —
+κάθε εξήγηση κοστίζει κλάσματα του σεντ. Το rate limiting (1 αίτημα /
+20 δευτ. ανά IP) προστατεύει επιπλέον από κατάχρηση/bots.
+
+## Μέχρι να γίνει deploy
+
+Μέχρι τότε, το `EXPLAIN_ENDPOINT` είναι άδειο και το κουμπί «Ρώτα τον
+βοηθό AI» απλά δείχνει ότι η υπηρεσία δεν είναι ακόμα συνδεδεμένη.

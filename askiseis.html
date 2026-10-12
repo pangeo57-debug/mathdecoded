@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Αποθετήριο ασκήσεων | MathDecoded</title>
+<meta name="description" content="Ασκήσεις με πολλαπλή επιλογή, οργανωμένες ανά τάξη και κεφάλαιο — Γυμνάσιο, Λύκειο, SAT Math.">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#EDE6D3">
+
+<style>
+  :root {
+    --cream: #EDE6D3;
+    --cream-2: #F6F1E5;
+    --cream-dark: #DBC8AA;
+    --ink: #1B1F24;
+    --ink-soft: #4A4740;
+    --teal: #436074;
+    --teal-deep: #2E4453;
+    --orange: #D08F4A;
+    --terracotta: #A54E2A;
+    --border: rgba(27,31,36,0.14);
+    --radius: 14px;
+    --serif: Georgia, 'Times New Roman', ui-serif, serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--cream);
+    line-height: 1.6;
+  }
+  img { max-width: 100%; display: block; height: auto; }
+  a { color: inherit; }
+  section { padding: 3.5rem 1.5rem; }
+  .wrap { max-width: 860px; margin: 0 auto; }
+  h1, h2, h3 { font-family: var(--serif); line-height: 1.15; margin: 0 0 0.6em; }
+  h2 { font-size: clamp(1.5rem, 3.2vw, 2.1rem); }
+  h3 { font-size: 1.2rem; }
+  .eyebrow {
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    font-weight: 700;
+    margin-bottom: 0.8em;
+    display: block;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.7em 1.4em;
+    border-radius: 999px;
+    font-weight: 700;
+    text-decoration: none;
+    border: 2px solid transparent;
+    cursor: pointer;
+    font-size: 0.95rem;
+  }
+  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--ink); }
+  .btn-ghost:hover { background: var(--ink); color: var(--cream); }
+
+  header {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(237,230,211,0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav {
+    max-width: 1080px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.8rem 1.5rem;
+  }
+  .brand { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+  .brand img { width: 40px; height: 40px; border-radius: 50%; }
+  .brand span { font-family: var(--serif); font-weight: 700; font-size: 1.25rem; letter-spacing: 0.02em; }
+
+  /* grade accordion */
+  .grade {
+    background: var(--cream-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 1rem;
+    overflow: hidden;
+  }
+  .grade-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 1.6rem; cursor: pointer; user-select: none;
+    font-family: var(--serif); font-weight: 700; font-size: 1.2rem;
+  }
+  .grade-head .count { font-family: var(--sans); font-weight: 600; font-size: 0.8rem; color: var(--ink-soft); }
+  .grade-head .arrow { transition: transform 0.2s ease; font-size: 1rem; color: var(--terracotta); }
+  .grade.open .grade-head .arrow { transform: rotate(90deg); }
+  .grade-body { display: none; padding: 0 1.6rem 1.4rem; }
+  .grade.open .grade-body { display: block; }
+
+  .chapter-list { display: grid; gap: 0.7rem; }
+  .chapter {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: 0.85rem 1.1rem; border-radius: 10px;
+    background: var(--cream); border: 1px solid var(--border);
+    text-decoration: none; color: var(--ink);
+  }
+  .chapter.live:hover { border-color: var(--teal); }
+  .chapter.live .chapter-title { font-weight: 700; }
+  .chapter.soon { opacity: 0.55; cursor: default; }
+  .chapter-sub { font-size: 0.82rem; color: var(--ink-soft); }
+  .chapter-badge {
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.03em;
+    padding: 0.25em 0.7em; border-radius: 999px; white-space: nowrap;
+  }
+  .chapter.live .chapter-badge { background: var(--teal); color: var(--cream-2); }
+  .chapter.soon .chapter-badge { background: var(--cream-dark); color: var(--ink-soft); }
+
+  footer {
+    text-align: center; padding: 2.4rem 1.5rem; font-size: 0.85rem; color: var(--ink-soft);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a class="brand" href="index.html">
+      <img src="icon-192.png" width="40" height="40" alt="MathDecoded">
+      <span>MathDecoded</span>
+    </a>
+    <a class="btn btn-ghost" href="index.html">← Αρχική</a>
+  </nav>
+</header>
+
+<main>
+  <section>
+    <div class="wrap">
+      <span class="eyebrow">Αποθετήριο ασκήσεων</span>
+      <h2>Εξάσκηση ανά τάξη &amp; κεφάλαιο</h2>
+      <p style="color:var(--ink-soft);">
+        Διάλεξε τάξη, μετά κεφάλαιο. Κάθε κεφάλαιο έχει ασκήσεις με πολλαπλή επιλογή,
+        άμεση επεξήγηση λύσης, και βοηθό AI για να σου εξηγήσει το λάθος σου.
+      </p>
+    </div>
+  </section>
+
+  <section style="padding-top:0;">
+    <div class="wrap" id="gradesRoot"></div>
+  </section>
+</main>
+
+<footer>
+  &copy; <span id="year"></span> MathDecoded. Αποθετήριο ασκήσεων.
+</footer>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(() => {});
+}
+
+// Κάθε τάξη έχει μια λίστα κεφαλαίων. Όσα έχουν href είναι έτοιμα («live»),
+// τα υπόλοιπα δείχνουν «Έρχεται σύντομα» μέχρι να γραφτούν.
+const GRADES = [
+  {
+    name: 'Α\' Γυμνασίου',
+    chapters: [
+      { title: 'Κεφάλαιο 1 — Φυσικοί αριθμοί & πράξεις', soon: true },
+      { title: 'Κεφάλαιο 2 — Κλάσματα, δεκαδικοί, ποσοστά', soon: true },
+      { title: 'Κεφάλαιο 3 — Εισαγωγή στην άλγεβρα', soon: true },
+    ],
+  },
+  {
+    name: 'Β\' Γυμνασίου',
+    chapters: [
+      {
+        title: 'Κεφάλαιο 1 — Εξισώσεις',
+        sub: 'Ομάδα Α\', Β\', Γ\' & Ασκήσεις Εμβάθυνσης — 77 ασκήσεις',
+        href: 'askiseis-b-gym-kef1-eksisoseis.html',
+      },
+      { title: 'Κεφάλαιο 2 — Πραγματικοί αριθμοί', soon: true },
+      { title: 'Κεφάλαιο 3 — Συναρτήσεις', soon: true },
+    ],
+  },
+  {
+    name: 'Γ\' Γυμνασίου',
+    chapters: [
+      { title: 'Κεφάλαιο 1 — Αλγεβρικές παραστάσεις', soon: true },
+      { title: 'Κεφάλαιο 2 — Εξισώσεις & ανισώσεις', soon: true },
+      { title: 'Κεφάλαιο 3 — Συστήματα εξισώσεων', soon: true },
+    ],
+  },
+  {
+    name: 'Λύκειο (Α\', Β\', Γ\') & Πανελλήνιες',
+    chapters: [
+      { title: 'Ύλη ανά τάξη — υπό κατασκευή', soon: true },
+    ],
+  },
+  {
+    name: 'SAT Math',
+    chapters: [
+      { title: 'Ενότητες SAT Math — υπό κατασκευή', soon: true },
+    ],
+  },
+];
+
+const root = document.getElementById('gradesRoot');
+
+GRADES.forEach((grade) => {
+  const liveCount = grade.chapters.filter(c => c.href).length;
+
+  const card = document.createElement('div');
+  card.className = 'grade';
+
+  const head = document.createElement('div');
+  head.className = 'grade-head';
+  head.innerHTML = `<span>${grade.name}</span><span class="count">${liveCount > 0 ? liveCount + ' έτοιμο κεφάλαιο' : 'Έρχεται σύντομα'} <span class="arrow">›</span></span>`;
+  head.addEventListener('click', () => card.classList.toggle('open'));
+
+  const body = document.createElement('div');
+  body.className = 'grade-body';
+  const list = document.createElement('div');
+  list.className = 'chapter-list';
+
+  grade.chapters.forEach(ch => {
+    const isLive = !!ch.href;
+    const el = document.createElement(isLive ? 'a' : 'div');
+    el.className = 'chapter ' + (isLive ? 'live' : 'soon');
+    if (isLive) el.href = ch.href;
+    el.innerHTML = `
+      <div>
+        <div class="chapter-title">${ch.title}</div>
+        ${ch.sub ? `<div class="chapter-sub">${ch.sub}</div>` : ''}
+      </div>
+      <span class="chapter-badge">${isLive ? 'Ξεκίνα →' : 'Έρχεται σύντομα'}</span>
+    `;
+    list.appendChild(el);
+  });
+
+  body.appendChild(list);
+  card.appendChild(head);
+  card.appendChild(body);
+  root.appendChild(card);
+
+  // ανοίγει αυτόματα η πρώτη τάξη που έχει έτοιμο κεφάλαιο
+  if (liveCount > 0 && !root.querySelector('.grade.open')) {
+    card.classList.add('open');
+  }
+});
+</script>
+
+</body>
+</html>
