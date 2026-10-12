@@ -155,6 +155,44 @@ const FIG = {
     return svg(260, 170, `${poly([[40, 130], [210, 130], [40, 30]])}${sq([40, 130], 14, 1, -1)}${T(125, 150, L.a || '')}${T(28, 85, L.b || '', 'end')}${T(136, 70, L.c || '', 'start')}${f.angle ? T(190, 122, f.angle, 'end') : ''}`);
   },
   circle: f => svg(220, 200, `<circle cx="110" cy="100" r="75" fill="${FILL}" stroke="${TEAL}" stroke-width="2"/>${dot([110, 100], 'O', 0, 18)}${line([110, 100], [185, 100])}${T(150, 92, f.r || 'R')}`),
+  isoH: f => svg(260, 170, `${poly([[130, 20], [30, 140], [230, 140]])}${line([130, 20], [130, 140], 'stroke-dasharray="5 4"')}${sq([130, 140], 12, 1, -1)}${T(130, 160, f.base)}${T(66, 76, f.side, 'end')}${T(194, 76, f.side, 'start')}${T(122, 86, f.h || 'h', 'end')}`),
+  equi: f => svg(260, 170, `${poly([[130, 20], [40, 140], [220, 140]])}${line([130, 20], [130, 140], 'stroke-dasharray="5 4"')}${sq([130, 140], 12, 1, -1)}${T(130, 160, f.side)}${T(72, 76, f.side, 'end')}${T(122, 86, f.h || 'h', 'end')}`),
+  numline: f => {
+    const x0 = 20, x1 = 300, sc = (x1 - x0) / (f.max - f.min), X = v => x0 + (v - f.min) * sc;
+    let t = '';
+    for (let k = Math.ceil(f.min); k <= Math.floor(f.max); k++) t += `<line x1="${X(k)}" y1="62" x2="${X(k)}" y2="72" stroke="${INK}"/>${T(X(k), 90, String(k))}`;
+    f.points.forEach(p => { t += `<circle cx="${X(p.v)}" cy="67" r="4.5" fill="${TEAL}"/>${T(X(p.v), 48, p.l)}`; });
+    return svg(320, 100, `<line x1="${x0 - 8}" y1="67" x2="${x1 + 8}" y2="67" stroke="${INK}" stroke-width="1.5"/>${t}`);
+  },
+  theodorus: f => {
+    const O = [0, 0], sc = 60, pts = [O];
+    let prev = [sc, 0], dir = [1, 0], out = line(O, prev);
+    pts.push(prev);
+    for (let i = 1; i <= f.n; i++) {
+      const perp = [dir[1], -dir[0]];
+      const nq = [prev[0] + perp[0] * sc, prev[1] + perp[1] * sc];
+      out += line(prev, nq) + line(O, nq);
+      pts.push(nq);
+      if ((f.labels || []).includes(i)) {
+        const m = [(O[0] + nq[0]) / 2, (O[1] + nq[1]) / 2], n = [nq[0] - O[0], nq[1] - O[1]], L = Math.hypot(n[0], n[1]);
+        out += T(m[0] - n[1] / L * 14, m[1] + n[0] / L * 14 + 5, '√' + (i + 1));
+      }
+      const d = [nq[0] - O[0], nq[1] - O[1]], L = Math.hypot(d[0], d[1]);
+      dir = [d[0] / L, d[1] / L]; prev = nq;
+    }
+    const xs = pts.map(p => p[0]), ys = pts.map(p => p[1]), pad = 34;
+    const x0 = Math.min(...xs) - pad, y0 = Math.min(...ys) - pad, w = Math.max(...xs) - x0 + pad, h = Math.max(...ys) - y0 + pad;
+    return `<svg viewBox="${x0} ${y0} ${w} ${h}" width="${Math.min(w, 330)}" xmlns="http://www.w3.org/2000/svg" role="img" font-family="Georgia, serif" font-size="15" fill="${INK}">${out}${dot(O, 'Ο', -8, 18)}</svg>`;
+  },
+  squareM: f => svg(260, 170, `${poly([[50, 140], [200, 140], [200, 20], [50, 20]])}${line([50, 140], [200, 80], `stroke-dasharray="5 4"`)}${line([50, 20], [200, 80], `stroke-dasharray="5 4"`)}${dot([200, 80], 'Μ', 14, 5)}${T(40, 154, 'Α', 'end')}${T(210, 154, 'Β', 'start')}${T(210, 18, 'Γ', 'start')}${T(40, 18, 'Δ', 'end')}${T(125, 160, '4')}`),
+  grid: f => {
+    let g = '';
+    for (let i = 0; i <= 7; i++) g += `<line x1="${30 + i * 30}" y1="20" x2="${30 + i * 30}" y2="140" stroke="rgba(67,96,116,0.25)"/>`;
+    for (let j = 0; j <= 4; j++) g += `<line x1="30" y1="${20 + j * 30}" x2="240" y2="${20 + j * 30}" stroke="rgba(67,96,116,0.25)"/>`;
+    const A = [60, 110], B = [210, 20];
+    return svg(270, 160, `${g}${line(A, B)}${line(A, [210, 110], 'stroke-dasharray="4 3"')}${line([210, 110], B, 'stroke-dasharray="4 3"')}${dot(A, 'Α', -10, 14)}${dot(B, 'Β', 10, -4)}`);
+  },
+  box: f => svg(300, 190, `${poly([[40, 70], [200, 70], [200, 160], [40, 160]])}${poly([[40, 70], [90, 30], [250, 30], [200, 70]])}${poly([[200, 70], [250, 30], [250, 120], [200, 160]])}${line([40, 160], [250, 30], 'stroke-dasharray="5 4"')}${T(120, 180, f.a)}${T(232, 152, f.b, 'start')}${T(26, 118, f.c, 'end')}`),
 };
 const drawFig = f => (f && FIG[f.type] ? FIG[f.type](f) : '');
 
