@@ -133,7 +133,7 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').ca
 // Βάλε εδώ το URL του Cloudflare Worker μετά το deploy (δες cloudflare-worker/README.md).
 const EXPLAIN_ENDPOINT = '';
 
-const MATH = { delimiters: [{ left: '$', right: '$', display: false }], throwOnError: false };
+const MATH = { delimiters: [{ left: '$', right: '$', display: false }], throwOnError: false, strict: false };
 const render = el => renderMathInElement(el, MATH);
 
 /* ---------- Σχήματα (SVG) ---------- */
@@ -148,7 +148,7 @@ const sq = (p, s, dirx, diry) => `<polyline points="${p[0] + dirx * s},${p[1]} $
 
 const FIG = {
   raw: f => f.svg,
-  rect: f => svg(260, 150, `${poly([[40, 30], [220, 30], [220, 110], [40, 110]])}${T(130, 22, f.labels[0])}${T(236, 75, f.labels[1], 'start')}`),
+  rect: f => svg(300, 150, `${poly([[40, 30], [220, 30], [220, 110], [40, 110]])}${T(130, 22, f.labels[0])}${T(232, 75, f.labels[1], 'start')}`),
   isosceles: f => svg(260, 160, `${poly([[130, 20], [30, 130], [230, 130]])}${T(130, 150, f.base)}${T(66, 70, f.side, 'end')}${T(194, 70, f.side, 'start')}`),
   right: f => {
     const L = f.labels || {};
@@ -184,7 +184,7 @@ const FIG = {
     const x0 = Math.min(...xs) - pad, y0 = Math.min(...ys) - pad, w = Math.max(...xs) - x0 + pad, h = Math.max(...ys) - y0 + pad;
     return `<svg viewBox="${x0} ${y0} ${w} ${h}" width="${Math.min(w, 330)}" xmlns="http://www.w3.org/2000/svg" role="img" font-family="Georgia, serif" font-size="15" fill="${INK}">${out}${dot(O, 'Ο', -8, 18)}</svg>`;
   },
-  squareM: f => svg(260, 170, `${poly([[50, 140], [200, 140], [200, 20], [50, 20]])}${line([50, 140], [200, 80], `stroke-dasharray="5 4"`)}${line([50, 20], [200, 80], `stroke-dasharray="5 4"`)}${dot([200, 80], 'Μ', 14, 5)}${T(40, 154, 'Α', 'end')}${T(210, 154, 'Β', 'start')}${T(210, 18, 'Γ', 'start')}${T(40, 18, 'Δ', 'end')}${T(125, 160, '4')}`),
+  squareM: f => svg(260, 170, `${poly([[50, 140], [200, 140], [200, 20], [50, 20]])}${line([50, 140], [200, 80], `stroke-dasharray="5 4"`)}${line([50, 20], [200, 80], `stroke-dasharray="5 4"`)}${dot([200, 80], 'Μ', 14, 5)}${T(40, 154, 'Α', 'end')}${T(210, 154, 'Β', 'start')}${T(210, 18, 'Γ', 'start')}${T(40, 18, 'Δ', 'end')}${T(125, 160, f.side || '4')}`),
   grid: f => {
     let g = '';
     for (let i = 0; i <= 7; i++) g += `<line x1="${30 + i * 30}" y1="20" x2="${30 + i * 30}" y2="140" stroke="rgba(67,96,116,0.25)"/>`;
@@ -230,6 +230,18 @@ const FIG = {
     (f.pts || []).forEach(p => { g += `<circle cx="${X(p.x)}" cy="${Y(p.y)}" r="3.6" fill="${INK}"/>` + (p.l ? `<text x="${X(p.x) + (p.dx ?? 7)}" y="${Y(p.y) + (p.dy ?? -7)}" font-size="13" font-style="italic">${p.l}</text>` : ''); });
     return `<svg viewBox="0 0 ${W} ${H}" width="${Math.min(W, 340)}" xmlns="http://www.w3.org/2000/svg" role="img" font-family="Georgia, serif" fill="${INK}">${g}</svg>`;
   },
+  para: f => svg(280, 150, `${poly([[50, 120], [190, 120], [240, 30], [100, 30]])}${line([100, 30], [100, 120], 'stroke-dasharray="5 4"')}${sq([100, 120], 11, 1, -1)}${T(120, 142, f.b)}${T(92, 80, f.h, 'end')}${f.s ? T(236, 84, f.s, 'start') : ''}`),
+  tri: f => svg(280, 150, `${poly([[40, 120], [250, 120], [130, 25]])}${line([130, 25], [130, 120], 'stroke-dasharray="5 4"')}${sq([130, 120], 11, 1, -1)}${T(160, 142, f.b)}${T(122, 80, f.h, 'end')}`),
+  trap: f => svg(280, 150, `${poly([[30, 120], [250, 120], [200, 30], [80, 30]])}${line([80, 30], [80, 120], 'stroke-dasharray="5 4"')}${sq([80, 120], 11, 1, -1)}${T(140, 22, f.top)}${T(150, 142, f.bottom)}${T(72, 80, f.h, 'end')}`),
+  rtrap: f => svg(280, 150, `${poly([[40, 120], [240, 120], [150, 35], [40, 35]])}${sq([40, 120], 11, 1, -1)}${T(95, 27, f.top)}${T(140, 142, f.bottom)}${T(30, 80, f.h || '', 'end')}${T(210, 70, f.side || '', 'start')}`),
+  rhomb: f => svg(280, 160, `${poly([[140, 20], [250, 80], [140, 140], [30, 80]])}${line([30, 80], [250, 80], 'stroke-dasharray="5 4"')}${line([140, 20], [140, 140], 'stroke-dasharray="5 4"')}${T(90, 72, f.d1 || '')}${T(150, 52, f.d2 || '', 'start')}${f.side ? T(215, 44, f.side, 'start') : ''}`),
+  sqcomp: f => svg(280, 180, `${poly([[40, 30], [160, 30], [160, 150], [40, 150]])}${poly([[160, 30], [160, 150], [240, 150]])}${T(100, 170, '6')}${T(30, 95, '6', 'end')}${T(200, 170, '4')}`),
+  squareE: f => svg(260, 170, `${poly([[60, 140], [200, 140], [200, 20], [60, 20]])}${line([60, 20], [130, 140], 'stroke-dasharray="5 4"')}${line([200, 20], [130, 140], 'stroke-dasharray="5 4"')}${dot([130, 140], 'Ε', 0, 16)}${T(50, 154, 'Α', 'end')}${T(210, 154, 'Β', 'start')}${T(210, 18, 'Γ', 'start')}${T(50, 18, 'Δ', 'end')}${T(30, 85, f.side || '4', 'end')}`),
+  rectE: f => svg(280, 160, `${poly([[40, 130], [240, 130], [240, 40], [40, 40]])}${line([40, 130], [110, 40], 'stroke-dasharray="5 4"')}${line([240, 130], [110, 40], 'stroke-dasharray="5 4"')}${dot([110, 40], 'Ε', 0, -8)}${T(30, 144, 'Α', 'end')}${T(250, 144, 'Β', 'start')}${T(250, 36, 'Γ', 'start')}${T(30, 36, 'Δ', 'end')}${T(140, 150, '10')}${T(258, 90, '6', 'start')}`),
+  cube: f => svg(240, 200, `${poly([[30, 80], [140, 80], [140, 180], [30, 180]])}${poly([[30, 80], [80, 35], [190, 35], [140, 80]])}${poly([[140, 80], [190, 35], [190, 135], [140, 180]])}${line([30, 180], [190, 35], 'stroke-dasharray="5 4"')}${T(85, 198, f.a)}`),
+  nested: f => svg(260, 200, `${poly([[40, 170], [220, 170], [220, 20], [40, 20]])}<polygon points="130,170 220,95 130,20 40,95" fill="rgba(208,143,74,0.12)" stroke="${TEAL}" stroke-width="2"/><polygon points="130,57 167,95 130,132 93,95" fill="rgba(67,96,116,0.2)" stroke="${TEAL}" stroke-width="1.6"/>${T(130, 188, f.a)}`),
+  sqdiag: f => svg(240, 180, `${poly([[50, 150], [190, 150], [190, 20], [50, 20]])}${line([50, 150], [190, 20], 'stroke-dasharray="5 4"')}${T(120, 168, f.a || '')}${T(130, 78, f.d || '', 'start')}`),
+  rectdiag: f => svg(330, 150, `${poly([[40, 120], [240, 120], [240, 30], [40, 30]])}${line([40, 120], [240, 30], 'stroke-dasharray="5 4"')}${T(140, 140, f.a || '')}${T(252, 80, f.b || '', 'start')}${T(120, 66, f.d || '', 'end')}`),
 };
 const drawFig = f => (f && FIG[f.type] ? FIG[f.type](f) : '');
 
