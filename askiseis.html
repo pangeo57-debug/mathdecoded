@@ -174,7 +174,7 @@ const root = document.getElementById('gradesRoot');
 
   const head = document.createElement('div');
   head.className = 'grade-head';
-  head.innerHTML = `<span>${grade.name}</span><span class="count">${liveCount > 0 ? liveCount + (liveCount === 1 ? ' κεφάλαιο' : ' κεφάλαια') : 'Έρχεται σύντομα'} <span class="arrow">›</span></span>`;
+  head.innerHTML = `<span>${grade.grade}${grade.book ? `<small style="display:block;font:400 0.78rem var(--sans);color:var(--ink-soft);margin-top:0.15rem;">${grade.book}</small>` : ''}</span><span class="count">${liveCount > 0 ? liveCount + (liveCount === 1 ? ' κεφάλαιο' : ' κεφάλαια') : 'Έρχεται σύντομα'} <span class="arrow">›</span></span>`;
   head.addEventListener('click', () => card.classList.toggle('open'));
 
   const body = document.createElement('div');
