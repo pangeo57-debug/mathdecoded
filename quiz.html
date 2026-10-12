@@ -335,9 +335,10 @@ function start(meta, quiz) {
   const label = document.getElementById('progressLabel');
   const update = () => {
     document.getElementById('progressFill').style.width = Math.round(answered / items.length * 100) + '%';
-    label.textContent = `${answered} / ${items.length} απαντημένες · ${right} σωστές`;
+    const mc = items.filter(it => it.options).length;
+    label.textContent = `${answered} / ${items.length} ολοκληρωμένες` + (mc ? ` · ${right} σωστές στις πολλαπλής (από ${mc})` : '');
     if (answered === items.length) {
-      document.getElementById('doneText').textContent = `Σωστές απαντήσεις: ${right} από ${items.length}.`;
+      document.getElementById('doneText').textContent = mc ? `Σωστές απαντήσεις πολλαπλής επιλογής: ${right} από ${mc}.` : 'Ολοκλήρωσες όλες τις ασκήσεις.';
       document.getElementById('done').classList.add('show');
     }
   };
@@ -377,6 +378,18 @@ function start(meta, quiz) {
     aiBox.className = 'ai-explain';
     aiRow.append(aiBtn, aiBox);
 
+    if (!item.options) {
+      const show = document.createElement('button');
+      show.type = 'button'; show.className = 'ai-ask-btn'; show.textContent = 'Δες τη λύση';
+      show.addEventListener('click', () => {
+        if (!explain.classList.contains('show')) { answered++; update(); }
+        explain.classList.add('show'); show.style.display = 'none';
+      });
+      card.append(show, explain);
+      root.appendChild(card);
+      cards.push(card);
+      return;
+    }
     let locked = false;
     shuffled(item.options).forEach(({ v, i: orig }) => {
       const b = document.createElement('button');
