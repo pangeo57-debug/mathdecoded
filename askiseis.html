@@ -157,68 +157,24 @@
   &copy; <span id="year"></span> MathDecoded. Αποθετήριο ασκήσεων.
 </footer>
 
+<script src="data/index.js"></script>
 <script>
 document.getElementById('year').textContent = new Date().getFullYear();
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js').catch(() => {});
 }
 
-// Κάθε τάξη έχει μια λίστα κεφαλαίων. Όσα έχουν href είναι έτοιμα («live»),
-// τα υπόλοιπα δείχνουν «Έρχεται σύντομα» μέχρι να γραφτούν.
-const GRADES = [
-  {
-    name: 'Α\' Γυμνασίου',
-    chapters: [
-      { title: 'Κεφάλαιο 1 — Φυσικοί αριθμοί & πράξεις', soon: true },
-      { title: 'Κεφάλαιο 2 — Κλάσματα, δεκαδικοί, ποσοστά', soon: true },
-      { title: 'Κεφάλαιο 3 — Εισαγωγή στην άλγεβρα', soon: true },
-    ],
-  },
-  {
-    name: 'Β\' Γυμνασίου',
-    chapters: [
-      {
-        title: 'Κεφάλαιο 1 — Εξισώσεις',
-        sub: 'Ομάδα Α\', Β\', Γ\' & Ασκήσεις Εμβάθυνσης — 77 ασκήσεις',
-        href: 'askiseis-b-gym-kef1-eksisoseis.html',
-      },
-      { title: 'Κεφάλαιο 2 — Πραγματικοί αριθμοί', soon: true },
-      { title: 'Κεφάλαιο 3 — Συναρτήσεις', soon: true },
-    ],
-  },
-  {
-    name: 'Γ\' Γυμνασίου',
-    chapters: [
-      { title: 'Κεφάλαιο 1 — Αλγεβρικές παραστάσεις', soon: true },
-      { title: 'Κεφάλαιο 2 — Εξισώσεις & ανισώσεις', soon: true },
-      { title: 'Κεφάλαιο 3 — Συστήματα εξισώσεων', soon: true },
-    ],
-  },
-  {
-    name: 'Λύκειο (Α\', Β\', Γ\') & Πανελλήνιες',
-    chapters: [
-      { title: 'Ύλη ανά τάξη — υπό κατασκευή', soon: true },
-    ],
-  },
-  {
-    name: 'SAT Math',
-    chapters: [
-      { title: 'Ενότητες SAT Math — υπό κατασκευή', soon: true },
-    ],
-  },
-];
-
 const root = document.getElementById('gradesRoot');
 
-GRADES.forEach((grade) => {
-  const liveCount = grade.chapters.filter(c => c.href).length;
+(window.CHAPTER_LIST || []).forEach((grade) => {
+  const liveCount = grade.chapters.filter(c => c.count).length;
 
   const card = document.createElement('div');
   card.className = 'grade';
 
   const head = document.createElement('div');
   head.className = 'grade-head';
-  head.innerHTML = `<span>${grade.name}</span><span class="count">${liveCount > 0 ? liveCount + ' έτοιμο κεφάλαιο' : 'Έρχεται σύντομα'} <span class="arrow">›</span></span>`;
+  head.innerHTML = `<span>${grade.name}</span><span class="count">${liveCount > 0 ? liveCount + (liveCount === 1 ? ' κεφάλαιο' : ' κεφάλαια') : 'Έρχεται σύντομα'} <span class="arrow">›</span></span>`;
   head.addEventListener('click', () => card.classList.toggle('open'));
 
   const body = document.createElement('div');
@@ -227,14 +183,14 @@ GRADES.forEach((grade) => {
   list.className = 'chapter-list';
 
   grade.chapters.forEach(ch => {
-    const isLive = !!ch.href;
+    const isLive = !!ch.count;
     const el = document.createElement(isLive ? 'a' : 'div');
     el.className = 'chapter ' + (isLive ? 'live' : 'soon');
-    if (isLive) el.href = ch.href;
+    if (isLive) el.href = 'quiz.html?ch=' + ch.id;
     el.innerHTML = `
       <div>
         <div class="chapter-title">${ch.title}</div>
-        ${ch.sub ? `<div class="chapter-sub">${ch.sub}</div>` : ''}
+        ${isLive ? `<div class="chapter-sub">${ch.count} ασκήσεις</div>` : ''}
       </div>
       <span class="chapter-badge">${isLive ? 'Ξεκίνα →' : 'Έρχεται σύντομα'}</span>
     `;

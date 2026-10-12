@@ -54,7 +54,7 @@ requests/μέρα).
 # AI εξήγηση λάθους μαθητή (askiseis.html)
 
 Δεύτερος Worker (`explain-mistake.js`) — στις σελίδες ασκήσεων
-(π.χ. `askiseis-b-gym-kef1-eksisoseis.html`), όταν ο μαθητής απαντήσει
+(`quiz.html`), όταν ο μαθητής απαντήσει
 λάθος, μπορεί να πατήσει **«Ρώτα τον βοηθό AI»** και να πάρει σύντομη
 εξήγηση του πιθανού λάθους σκεπτικού του, μέσω του Claude API.
 
@@ -89,7 +89,7 @@ requests/μέρα).
 
 6. **Πάρε το URL** του Worker (π.χ.
    `https://mathdecoded-explain.<username>.workers.dev`) και βάλτο στο
-   `askiseis-b-gym-kef1-eksisoseis.html`, στη μεταβλητή `EXPLAIN_ENDPOINT`
+   `quiz.html`, στη μεταβλητή `EXPLAIN_ENDPOINT`
    στην αρχή του `<script>` (κοντά στο τέλος του αρχείου).
 
 ## Κόστος
