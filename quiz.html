@@ -193,6 +193,43 @@ const FIG = {
     return svg(270, 160, `${g}${line(A, B)}${line(A, [210, 110], 'stroke-dasharray="4 3"')}${line([210, 110], B, 'stroke-dasharray="4 3"')}${dot(A, 'Α', -10, 14)}${dot(B, 'Β', 10, -4)}`);
   },
   box: f => svg(300, 190, `${poly([[40, 70], [200, 70], [200, 160], [40, 160]])}${poly([[40, 70], [90, 30], [250, 30], [200, 70]])}${poly([[200, 70], [250, 30], [250, 120], [200, 160]])}${line([40, 160], [250, 30], 'stroke-dasharray="5 4"')}${T(120, 180, f.a)}${T(232, 152, f.b, 'start')}${T(26, 118, f.c, 'end')}`),
+  plot: f => {
+    const [x0, x1] = f.xr, [y0, y1] = f.yr, cell = f.cell || 26, pad = 22;
+    const W = (x1 - x0) * cell + 2 * pad, H = (y1 - y0) * cell + 2 * pad;
+    const X = x => pad + (x - x0) * cell, Y = y => pad + (y1 - y) * cell;
+    const COL = ['#436074', '#A54E2A', '#3F7A4E', '#8A6D1F'];
+    let g = '';
+    for (let x = Math.ceil(x0); x <= x1; x++) g += `<line x1="${X(x)}" y1="${Y(y0)}" x2="${X(x)}" y2="${Y(y1)}" stroke="rgba(67,96,116,0.18)"/>`;
+    for (let y = Math.ceil(y0); y <= y1; y++) g += `<line x1="${X(x0)}" y1="${Y(y)}" x2="${X(x1)}" y2="${Y(y)}" stroke="rgba(67,96,116,0.18)"/>`;
+    g += `<line x1="${X(x0)}" y1="${Y(0)}" x2="${X(x1)}" y2="${Y(0)}" stroke="${INK}" stroke-width="1.4"/><line x1="${X(0)}" y1="${Y(y0)}" x2="${X(0)}" y2="${Y(y1)}" stroke="${INK}" stroke-width="1.4"/>`;
+    g += `<text x="${X(x1) + 2}" y="${Y(0) + 14}" font-size="13" font-style="italic" text-anchor="end">x</text><text x="${X(0) + 6}" y="${Y(y1) + 4}" font-size="13" font-style="italic">y</text>`;
+    const st = f.step || 1;
+    for (let x = Math.ceil(x0); x <= x1; x++) if (x && x % st === 0) g += `<text x="${X(x)}" y="${Y(0) + 14}" font-size="11" text-anchor="middle">${x}</text>`;
+    for (let y = Math.ceil(y0); y <= y1; y++) if (y && y % st === 0) g += `<text x="${X(0) - 5}" y="${Y(y) + 4}" font-size="11" text-anchor="end">${y}</text>`;
+    const curve = (fn, xa, xb, col, label) => {
+      let seg = [], segs = [];
+      for (let i = 0; i <= 240; i++) {
+        const x = xa + (xb - xa) * i / 240, y = fn(x);
+        if (isFinite(y) && y >= y0 && y <= y1) seg.push([X(x), Y(y)]); else { if (seg.length) segs.push(seg); seg = []; }
+      }
+      if (seg.length) segs.push(seg);
+      let out = segs.map(s => `<polyline points="${s.map(p => p.join(',')).join(' ')}" fill="none" stroke="${col}" stroke-width="2.2"/>`).join('');
+      if (label && segs.length) { const last = segs[segs.length - 1], p = last[Math.max(0, last.length - 12)]; out += `<text x="${p[0] - 4}" y="${p[1] - 7}" font-size="13" font-style="italic" fill="${col}" text-anchor="end">${label}</text>`; }
+      return out;
+    };
+    (f.polys || []).forEach(p => { g += `<polygon points="${p.map(q => X(q[0]) + ',' + Y(q[1])).join(' ')}" fill="rgba(208,143,74,0.22)" stroke="${TEAL}" stroke-width="2"/>`; });
+    (f.lines || []).forEach((l, i) => {
+      const col = COL[i % COL.length];
+      if (l.v !== undefined) g += `<line x1="${X(l.v)}" y1="${Y(y0)}" x2="${X(l.v)}" y2="${Y(y1)}" stroke="${col}" stroke-width="2.2"/>`;
+      else g += curve(x => l.m * x + (l.b || 0), x0, x1, col, l.l);
+    });
+    (f.hyp || []).forEach((h, i) => {
+      const col = COL[(i + (f.lines || []).length) % COL.length];
+      g += curve(x => h.a / x, x0, -0.001, col, h.l) + curve(x => h.a / x, 0.001, x1, col);
+    });
+    (f.pts || []).forEach(p => { g += `<circle cx="${X(p.x)}" cy="${Y(p.y)}" r="3.6" fill="${INK}"/>` + (p.l ? `<text x="${X(p.x) + (p.dx ?? 7)}" y="${Y(p.y) + (p.dy ?? -7)}" font-size="13" font-style="italic">${p.l}</text>` : ''); });
+    return `<svg viewBox="0 0 ${W} ${H}" width="${Math.min(W, 340)}" xmlns="http://www.w3.org/2000/svg" role="img" font-family="Georgia, serif" fill="${INK}">${g}</svg>`;
+  },
 };
 const drawFig = f => (f && FIG[f.type] ? FIG[f.type](f) : '');
 
