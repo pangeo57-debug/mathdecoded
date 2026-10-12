@@ -5,6 +5,7 @@
 ## Σελίδες
 
 - [Αρχική](https://pangeo57-debug.github.io/mathdecoded/): υπηρεσίες, τάξεις και διάρκεια μαθημάτων, μορφές διδασκαλίας, φόρμα επικοινωνίας.
+- [Ασκήσεις](https://pangeo57-debug.github.io/mathdecoded/askiseis.html): αποθετήριο ασκήσεων πολλαπλής επιλογής ανά τάξη (Α' και Β' Γυμνασίου) και κεφάλαιο, με επεξήγηση λύσης.
 - [Γρίφοι](https://pangeo57-debug.github.io/mathdecoded/grifoi.html): μαθηματικοί γρίφοι και quiz.
 
 ## Στοιχεία επικοινωνίας
