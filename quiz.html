@@ -65,6 +65,13 @@
   .q-option.wrong { background: rgba(176,58,46,0.12); border-color: var(--red); }
   .q-explain { margin-top: 1rem; padding: 0.9em 1.1em; background: var(--cream); border-left: 3px solid var(--teal); border-radius: 8px; font-size: 0.97rem; display: none; line-height: 1.9; overflow-x: auto; }
   .q-explain.show { display: block; }
+  .q-explain.note { background: #FFF6B8; border-left: none; border-radius: 3px; box-shadow: 2px 3px 0 rgba(27,31,36,0.12); transform: rotate(-0.4deg); }
+  .q-explain.note .lbl { color: var(--terracotta); }
+  .prev { display: inline-block; margin-left: 0.4rem; font-size: 0.72rem; font-weight: 700; padding: 0.25em 0.7em; border-radius: 999px; }
+  .prev.w { background: rgba(176,58,46,0.12); color: var(--red); }
+  .prev.r { background: rgba(63,122,78,0.15); color: var(--green); }
+  .chip.mine { border-color: var(--red); }
+  .reset-link { background: none; border: none; color: var(--ink-soft); text-decoration: underline; font-size: 0.8rem; cursor: pointer; margin-top: 0.6rem; padding: 0; }
   .q-explain .lbl { font-weight: 700; color: var(--teal-deep); display: block; margin-bottom: 0.2em; }
 
   /* πλήρης μαθηματική γραφή: ποτέ σπάσιμο μέσα σε έκφραση */
@@ -126,6 +133,7 @@
 <script src="vendor/katex/katex.min.js"></script>
 <script src="vendor/katex/auto-render.min.js"></script>
 <script src="data/index.js"></script>
+<script src="progress.js"></script>
 <script>
 document.getElementById('year').textContent = new Date().getFullYear();
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(() => {});
@@ -331,6 +339,8 @@ function start(meta, quiz) {
   const root = document.getElementById('quizRoot');
   const cards = [];
   let answered = 0, right = 0;
+  const P = window.MDProgress;
+  const saved = P ? P.chapter(meta.id) : {};
 
   const label = document.getElementById('progressLabel');
   const update = () => {
@@ -351,6 +361,14 @@ function start(meta, quiz) {
     const tag = document.createElement('span');
     tag.className = 'q-tag'; tag.textContent = item.tag;
     card.appendChild(tag);
+    const prev = saved[i];
+    if (prev === 'w' || prev === 'r') {
+      const p = document.createElement('span');
+      p.className = 'prev ' + prev;
+      p.textContent = prev === 'w' ? 'Την προηγούμενη φορά: λάθος' : 'Την προηγούμενη φορά: σωστή';
+      card.appendChild(p);
+      card.dataset.prev = prev;
+    }
 
     const q = document.createElement('div');
     q.className = 'q-text';
@@ -382,7 +400,7 @@ function start(meta, quiz) {
       const show = document.createElement('button');
       show.type = 'button'; show.className = 'ai-ask-btn'; show.textContent = 'Δες τη λύση';
       show.addEventListener('click', () => {
-        if (!explain.classList.contains('show')) { answered++; update(); }
+        if (!explain.classList.contains('show')) { answered++; update(); P && P.record(meta.id, i, 's'); }
         explain.classList.add('show'); show.style.display = 'none';
       });
       card.append(show, explain);
@@ -402,9 +420,12 @@ function start(meta, quiz) {
           el.disabled = true;
           if (+el.dataset.orig === item.correct) el.classList.add('correct');
         });
+        P && P.record(meta.id, i, orig === item.correct ? 'r' : 'w');
         if (orig === item.correct) right++;
         else {
           b.classList.add('wrong');
+          explain.classList.add('note');
+          explain.querySelector('.lbl').textContent = 'Πρόσεξε! Δες πού ήταν το λάθος';
           aiRow.style.display = 'block';
           aiBtn.addEventListener('click', () => askAi(aiBtn, aiBox, {
             question: item.q, options: item.options,
@@ -441,6 +462,26 @@ function start(meta, quiz) {
     };
     mk('Όλες', null);
     groups.forEach(g => mk(g, g));
+  }
+  const wrongN = cards.filter(c => c.dataset.prev === 'w').length;
+  const box = document.getElementById('filters');
+  if (wrongN) {
+    const c = document.createElement('button');
+    c.type = 'button'; c.className = 'chip mine'; c.textContent = `Ξαναδοκίμασε τα λάθη μου (${wrongN})`;
+    c.addEventListener('click', () => {
+      [...box.children].forEach(x => x.classList.toggle('active', x === c));
+      cards.forEach(cd => { cd.style.display = cd.dataset.prev === 'w' ? '' : 'none'; });
+    });
+    box.appendChild(c);
+  }
+  if (P && Object.keys(saved).length) {
+    const r = document.createElement('button');
+    r.type = 'button'; r.className = 'reset-link'; r.textContent = 'Μηδένισε την πρόοδό μου σε αυτό το κεφάλαιο';
+    r.addEventListener('click', () => {
+      if (r.dataset.armed) { P.reset(meta.id); location.reload(); return; }
+      r.dataset.armed = '1'; r.textContent = 'Πάτα ξανά για επιβεβαίωση';
+    });
+    box.after(r);
   }
 }
 </script>

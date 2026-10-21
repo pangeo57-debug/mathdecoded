@@ -119,6 +119,11 @@
   .chapter.live .chapter-badge { background: var(--teal); color: var(--cream-2); }
   .chapter.soon .chapter-badge { background: var(--cream-dark); color: var(--ink-soft); }
 
+  .chapter-prog { height: 4px; background: var(--cream-dark); border-radius: 2px; margin-top: 0.35rem; overflow: hidden; max-width: 220px; }
+  .chapter-prog i { display: block; height: 100%; background: var(--terracotta); }
+  .me { display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; margin-top: 1.2rem; padding: 1rem 1.2rem; background: var(--cream-2); border: 1px solid var(--border); border-radius: var(--radius); }
+  .me .streak { font-weight: 700; }
+  .me a { margin-left: auto; background: var(--terracotta); color: #fff; border-radius: 999px; padding: 0.5em 1.1em; font-weight: 700; text-decoration: none; font-size: 0.9rem; }
   footer {
     text-align: center; padding: 2.4rem 1.5rem; font-size: 0.85rem; color: var(--ink-soft);
   }
@@ -145,6 +150,7 @@
         Διάλεξε τάξη, μετά κεφάλαιο. Στο Γυμνάσιο οι ασκήσεις είναι πολλαπλής επιλογής, με άμεση επεξήγηση λύσης.
         Στο Λύκειο οι ασκήσεις είναι ανοιχτές με λύση βήμα βήμα, και πολλαπλής επιλογής όπου ταιριάζει η σύντομη απάντηση.
       </p>
+      <div class="me" id="me" hidden></div>
     </div>
   </section>
 
@@ -158,6 +164,7 @@
 </footer>
 
 <script src="data/index.js"></script>
+<script src="progress.js"></script>
 <script>
 document.getElementById('year').textContent = new Date().getFullYear();
 if ('serviceWorker' in navigator) {
@@ -165,6 +172,25 @@ if ('serviceWorker' in navigator) {
 }
 
 const root = document.getElementById('gradesRoot');
+const P = window.MDProgress;
+const allCh = (window.CHAPTER_LIST || []).flatMap(g => g.chapters);
+if (P) {
+  const s = P.streak(), l = P.last();
+  const lc = l && allCh.find(c => c.id === l.ch && c.count);
+  if (s || lc) {
+    const me = document.getElementById('me');
+    me.innerHTML = `<span class="streak">🔥 ${s} ${s === 1 ? 'μέρα' : 'μέρες'} συνεχόμενη εξάσκηση</span>` +
+      (lc ? `<a href="quiz.html?ch=${lc.id}">Συνέχισε: ${lc.title} →</a>` : '');
+    me.hidden = false;
+  }
+}
+
+function progLine(ch) {
+  const s = P ? P.summary(ch.id) : { done: 0 };
+  if (!s.done) return `<div class="chapter-sub">${ch.count} ασκήσεις</div>`;
+  const pct = Math.min(100, Math.round(s.done / ch.count * 100));
+  return `<div class="chapter-sub">${s.done} / ${ch.count} λυμένες${s.wrong ? ` · ${s.wrong} ${s.wrong === 1 ? "λάθος" : "λάθη"} για επανάληψη` : ''}</div><div class="chapter-prog"><i style="width:${pct}%"></i></div>`;
+}
 
 (window.CHAPTER_LIST || []).forEach((grade) => {
   const liveCount = grade.chapters.filter(c => c.count).length;
@@ -190,7 +216,7 @@ const root = document.getElementById('gradesRoot');
     el.innerHTML = `
       <div>
         <div class="chapter-title">${ch.title}</div>
-        ${isLive ? `<div class="chapter-sub">${ch.count} ασκήσεις</div>` : ''}
+        ${isLive ? progLine(ch) : ''}
       </div>
       <span class="chapter-badge">${isLive ? 'Ξεκίνα →' : 'Έρχεται σύντομα'}</span>
     `;
