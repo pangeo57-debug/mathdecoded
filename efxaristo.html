@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ευχαριστώ για το μήνυμα | MathDecoded</title>
+<meta name="description" content="Το μήνυμά σου στάλθηκε.">
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://pangeo57-debug.github.io/mathdecoded/efxaristo.html">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#EDE6D3">
+<meta property="og:image" content="https://pangeo57-debug.github.io/mathdecoded/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<style>
+  :root {
+    --cream: #EDE6D3;
+    --cream-2: #F6F1E5;
+    --cream-dark: #DBC8AA;
+    --ink: #1B1F24;
+    --ink-soft: #4A4740;
+    --teal: #436074;
+    --teal-deep: #2E4453;
+    --orange: #D08F4A;
+    --terracotta: #A54E2A;
+    --border: rgba(27,31,36,0.14);
+    --radius: 14px;
+    --serif: Georgia, 'Times New Roman', ui-serif, serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font-family: var(--sans); color: var(--ink); background: var(--cream); line-height: 1.6; }
+  img { max-width: 100%; height: auto; display: block; }
+  a { color: var(--teal-deep); }
+  section { padding: 3.5rem 1.5rem; }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  h1, h2, h3 { font-family: var(--serif); line-height: 1.15; margin: 1.6em 0 0.5em; }
+  h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); margin-top: 0; }
+  h2 { font-size: 1.25rem; }
+  .updated { color: var(--ink-soft); font-size: 0.9rem; }
+  .eyebrow {
+    font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--terracotta); font-weight: 700; margin-bottom: 0.8em; display: block;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5em;
+    padding: 0.85em 1.6em; border-radius: 999px; font-weight: 700;
+    text-decoration: none; border: 2px solid transparent; cursor: pointer; font-size: 1rem;
+  }
+  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--ink); }
+  .btn-ghost:hover { background: var(--ink); color: var(--cream); }
+
+  header {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(237,230,211,0.92); backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav {
+    max-width: 1080px; margin: 0 auto; display: flex; align-items: center;
+    justify-content: space-between; padding: 0.8rem 1.5rem;
+  }
+  .brand { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; color: var(--ink); }
+  .brand img { width: 40px; height: 40px; border-radius: 50%; }
+  .brand span { font-family: var(--serif); font-weight: 700; font-size: 1.25rem; letter-spacing: 0.02em; }
+
+  .card { background: var(--cream-2); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.4rem 1.6rem; }
+
+  footer { text-align: center; padding: 2.4rem 1.5rem; font-size: 0.85rem; color: var(--ink-soft); }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a class="brand" href="index.html">
+      <img src="icon-192.png" width="192" height="192" alt="MathDecoded">
+      <span>MathDecoded</span>
+    </a>
+    <a class="btn btn-ghost" href="index.html">← Αρχική</a>
+  </nav>
+</header>
+
+<main>
+  <section>
+    <div class="wrap">
+      <span class="eyebrow">Το μήνυμα στάλθηκε</span>
+      <h1>Ευχαριστώ! Θα σου απαντήσω σύντομα.</h1>
+      <p>Συνήθως απαντώ μέσα σε 24 ώρες, στο email που έδωσες. Αν δεν δεις απάντηση, κοίταξε και στα ανεπιθύμητα (spam).</p>
+      <div class="card" style="margin-top:1.4rem;">
+        <h2 style="margin-top:0;">Μέχρι τότε</h2>
+        <ul>
+          <li><a href="askiseis.html">Λύσε ασκήσεις</a> στο κεφάλαιο που διαβάζεις τώρα.</li>
+          <li><a href="grifoi.html">Δοκίμασε τους γρίφους</a>.</li>
+          <li>Ακολούθησε το <a href="https://www.instagram.com/math__decoded" target="_blank" rel="noopener">@math__decoded</a> στο Instagram.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  &copy; <span id="year"></span> MathDecoded. Ιδιωτικά μαθήματα Μαθηματικών · SAT · Πανελλήνιες.
+</footer>
+
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+
+</body>
+</html>

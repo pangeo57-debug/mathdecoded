@@ -16,7 +16,7 @@
 <meta property="og:title" content="MathDecoded — Ιδιωτικά μαθήματα Μαθηματικών & προετοιμασία SAT">
 <meta property="og:description" content="Ιδιωτικά μαθήματα Μαθηματικών, προετοιμασία για SAT και Πανελλήνιες. Προσωπικό πρόγραμμα, εστιασμένο στην εξέταση.">
 <meta property="og:url" content="https://pangeo57-debug.github.io/mathdecoded/">
-<meta property="og:image" content="https://pangeo57-debug.github.io/mathdecoded/icon-512.png">
+<meta property="og:image" content="https://pangeo57-debug.github.io/mathdecoded/og-image.png">
 <meta property="og:locale" content="el_GR">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -26,8 +26,8 @@
   "@type": "EducationalOrganization",
   "name": "MathDecoded",
   "url": "https://pangeo57-debug.github.io/mathdecoded/",
-  "logo": "https://pangeo57-debug.github.io/mathdecoded/icon-512.png",
-  "image": "https://pangeo57-debug.github.io/mathdecoded/icon-512.png",
+  "logo": "https://pangeo57-debug.github.io/mathdecoded/og-image.png",
+  "image": "https://pangeo57-debug.github.io/mathdecoded/og-image.png",
   "description": "Ιδιωτικά μαθήματα Μαθηματικών, προετοιμασία για SAT Math και Πανελλήνιες Εξετάσεις. Ατομικά και ομαδικά μαθήματα, online ή δια ζώσης.",
   "email": "pangeo57@yahoo.gr",
   "sameAs": ["https://www.instagram.com/math__decoded"],
@@ -255,6 +255,15 @@
   .contact-links { display: grid; gap: 1rem; margin-top: 1.6rem; }
   .contact-links a { text-decoration: none; display: flex; align-items: center; gap: 0.7em; font-weight: 600; }
   .contact-links a:hover { color: var(--orange); }
+  .field-err { color: #E08A6E; font-size: 0.8rem; margin-top: 0.25rem; display: block; }
+  .form [aria-invalid="true"] { border-color: #E08A6E; }
+  .mobile-cta { display: none; }
+  @media (max-width: 760px) {
+    .mobile-cta { display: block; position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; padding: 0.7rem 1rem calc(0.7rem + env(safe-area-inset-bottom, 0px)); background: rgba(237,230,211,0.96); border-top: 1px solid rgba(27,31,36,0.14); transition: transform 0.2s ease; }
+    .mobile-cta a { display: block; text-align: center; background: var(--terracotta); color: var(--cream-2); font-weight: 700; padding: 0.8em; border-radius: 999px; text-decoration: none; }
+    .mobile-cta.away { transform: translateY(110%); }
+    .nav-cta { display: none; }
+  }
   #form-status { margin: 0; font-size: 0.9rem; min-height: 1.2em; }
   #form-status.ok { color: #7FBF8E; }
   #form-status.err { color: #E08A6E; }
@@ -299,7 +308,7 @@
       <li><a href="grifoi.html">Γρίφοι</a></li>
     </ul>
     <div class="nav-cta">
-      <a class="btn btn-primary" href="#contact">Κλείσε γνωριμία</a>
+      <a class="btn btn-primary nav-cta" href="#contact">Κλείσε γνωριμία</a>
     </div>
   </nav>
 </header>
@@ -350,7 +359,7 @@
         </div>
       </div>
       <!-- Η φόρμα στέλνει μέσω Formspree (ήδη συνδεδεμένο με pangeo57@yahoo.gr). -->
-      <form class="form" id="contact-form" action="https://formspree.io/f/xyeyvzga" method="POST">
+      <form class="form" id="contact-form" novalidate action="https://formspree.io/f/xyeyvzga" method="POST">
         <input type="hidden" name="_subject" value="Νέο μήνυμα από το MathDecoded site">
         <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
         <div>
@@ -563,8 +572,10 @@
 
 <footer>
   &copy; <span id="year"></span> MathDecoded. Ιδιωτικά μαθήματα Μαθηματικών · SAT · Πανελλήνιες.
-  · <a href="privacy.html">Πολιτική Απορρήτου</a>
+  · <a href="privacy.html">Πολιτική Απορρήτου</a> · <a href="oroi.html">Όροι χρήσης</a>
 </footer>
+
+<div class="mobile-cta away" id="mobileCta"><a href="#contact">Κλείσε δωρεάν γνωριμία</a></div>
 
 <div id="cookie-banner" class="cookie-banner" hidden>
   <p>Αυτό το site χρησιμοποιεί cookies για στατιστικά επισκεψιμότητας. Συμφωνείς;</p>
@@ -581,6 +592,18 @@
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js').catch(() => {});
   }
+
+  // σταθερό κουμπί στο κινητό: εμφανίζεται μετά το hero, κρύβεται στη φόρμα και όσο φαίνεται το cookie banner
+  const mobileCta = document.getElementById('mobileCta');
+  const ctaUpdate = () => {
+    const contact = document.getElementById('contact').getBoundingClientRect();
+    const banner = document.getElementById('cookie-banner');
+    const away = window.scrollY < 500 || (contact.top < window.innerHeight && contact.bottom > 0) || (banner && !banner.hidden);
+    mobileCta.classList.toggle('away', away);
+  };
+  window.addEventListener('scroll', ctaUpdate, { passive: true });
+  document.querySelectorAll('#cookie-banner button').forEach(b => b.addEventListener('click', () => setTimeout(ctaUpdate, 50)));
+  ctaUpdate();
 
   const contactForm = document.getElementById('contact-form');
   const formStatus = document.getElementById('form-status');
@@ -600,6 +623,22 @@
   contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const submitBtn = contactForm.querySelector('button[type="submit"]');
+
+    contactForm.querySelectorAll('.field-err').forEach(el => el.remove());
+    contactForm.querySelectorAll('[aria-invalid]').forEach(el => el.removeAttribute('aria-invalid'));
+    const fieldErr = (input, msg) => {
+      input.setAttribute('aria-invalid', 'true');
+      const m = document.createElement('span');
+      m.className = 'field-err'; m.textContent = msg;
+      input.after(m);
+    };
+    const nameIn = document.getElementById('name'), emailIn = document.getElementById('email');
+    if (!nameIn.value.trim()) fieldErr(nameIn, 'Γράψε το όνομά σου.');
+    if (!emailIn.value.trim()) fieldErr(emailIn, 'Γράψε το email σου για να σου απαντήσω.');
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailIn.value.trim())) fieldErr(emailIn, 'Αυτό δεν μοιάζει με email. Έλεγξε π.χ. για το @.');
+    if (!captchaInput.value.trim()) fieldErr(captchaInput, 'Απάντησε στην πράξη.');
+    const firstBad = contactForm.querySelector('[aria-invalid="true"]');
+    if (firstBad) { firstBad.focus(); formStatus.textContent = ''; return; }
 
     if (parseInt(captchaInput.value, 10) !== captchaAnswer) {
       formStatus.textContent = 'Λάθος απάντηση στην ερώτηση επιβεβαίωσης — δοκίμασε ξανά.';
@@ -621,7 +660,7 @@
         formStatus.textContent = 'Ευχαριστώ! Θα σου απαντήσω σύντομα.';
         formStatus.className = 'ok';
         contactForm.reset();
-        newCaptcha();
+        location.href = 'efxaristo.html';
       } else {
         const data = await res.json().catch(() => ({}));
         const msg = data.errors ? data.errors.map(x => x.message).join(', ') : 'Αποτυχία αποστολής';
