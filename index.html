@@ -132,7 +132,11 @@
   .nav-cta { display: flex; align-items: center; gap: 0.8rem; }
   .nav-toggle { display: none; }
   @media (max-width: 760px) {
-    .nav-links { display: none; }
+    .nav { flex-wrap: wrap; }
+    .nav-toggle { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 1.5px solid var(--border); border-radius: 10px; background: transparent; font-size: 1.3rem; cursor: pointer; color: var(--ink); }
+    .nav-links { display: none; order: 3; width: 100%; flex-direction: column; gap: 0; padding-top: 0.5rem; }
+    .nav-links.open { display: flex; }
+    .nav-links a { display: block; padding: 0.75rem 0.2rem; border-top: 1px solid var(--border); }
   }
 
   /* hero */
@@ -144,15 +148,15 @@
     align-items: center;
   }
   @media (max-width: 860px) {
-    .hero .wrap { grid-template-columns: 1fr; text-align: center; }
-    .hero-art { order: -1; max-width: 280px; margin: 0 auto; }
+    .hero { padding-top: 2.2rem; }
+    .hero .wrap { grid-template-columns: 1fr; gap: 1.6rem; }
+    .hero-art { max-width: 240px; margin: 0 auto; }
   }
   .hero h1 { font-size: clamp(2.1rem, 5vw, 3.4rem); }
   .hero p.lead { font-size: 1.15rem; color: var(--ink-soft); max-width: 46ch; }
-  @media (max-width: 860px) { .hero p.lead { margin-inline: auto; } }
-  .btn-pair { display: inline-flex; gap: 0.6rem; flex-wrap: nowrap; }
+    .btn-pair { display: inline-flex; gap: 0.6rem; flex-wrap: nowrap; }
   .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.8rem; }
-  @media (max-width: 860px) { .hero-actions { justify-content: center; } }
+  @media (max-width: 560px) { .hero-actions { gap: 0.6rem; } .hero-actions .btn { padding: 0.65em 1.1em; font-size: 0.9rem; } .btn-pair { flex-wrap: wrap; } }
   .hero-art { position: relative; }
   .hero-art img { border-radius: 50%; box-shadow: 0 20px 50px rgba(27,31,36,0.18); }
 
@@ -160,7 +164,7 @@
   .stats {
     display: flex; gap: 2.4rem; margin-top: 2.4rem; flex-wrap: wrap;
   }
-  @media (max-width: 860px) { .stats { justify-content: center; } }
+  @media (max-width: 560px) { .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; } .stat b { font-size: 1.3rem; } }
   .stat b { display: block; font-family: var(--serif); font-size: 1.6rem; color: var(--teal-deep); }
   .stat span { font-size: 0.85rem; color: var(--ink-soft); }
 
@@ -300,7 +304,8 @@
       <img src="icon-192.png" width="192" height="192" alt="MathDecoded">
       <span>MathDecoded</span>
     </a>
-    <ul class="nav-links">
+    <button class="nav-toggle" id="navToggle" type="button" aria-label="Μενού" aria-expanded="false" aria-controls="navLinks">☰</button>
+    <ul class="nav-links" id="navLinks">
       <li><a href="#why">Γιατί MathDecoded</a></li>
       <li><a href="#levels">Τάξεις</a></li>
       <li><a href="#packages">Πακέτα</a></li>
@@ -604,6 +609,13 @@
   window.addEventListener('scroll', ctaUpdate, { passive: true });
   document.querySelectorAll('#cookie-banner button').forEach(b => b.addEventListener('click', () => setTimeout(ctaUpdate, 50)));
   ctaUpdate();
+
+  const navToggle = document.getElementById('navToggle'), navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', open); navToggle.textContent = open ? '✕' : '☰';
+  });
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { navLinks.classList.remove('open'); navToggle.textContent = '☰'; navToggle.setAttribute('aria-expanded', false); }));
 
   const contactForm = document.getElementById('contact-form');
   const formStatus = document.getElementById('form-status');
