@@ -239,6 +239,9 @@ const FIG = {
       if (l.v !== undefined) g += `<line x1="${X(l.v)}" y1="${Y(y0)}" x2="${X(l.v)}" y2="${Y(y1)}" stroke="${col}" stroke-width="2.2"/>`;
       else g += curve(x => l.m * x + (l.b || 0), x0, x1, col, l.l);
     });
+    (f.par || []).forEach((q, i) => {
+      g += curve(x => q.a * x * x + (q.b || 0) * x + (q.c || 0), x0, x1, COL[(i + (f.lines || []).length) % COL.length], q.l);
+    });
     (f.hyp || []).forEach((h, i) => {
       const col = COL[(i + (f.lines || []).length) % COL.length];
       g += curve(x => h.a / x, x0, -0.001, col, h.l) + curve(x => h.a / x, 0.001, x1, col);
