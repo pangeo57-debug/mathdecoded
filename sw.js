@@ -2,7 +2,7 @@
 // Online visitors always get the fresh network response; CACHE only matters for
 // the offline fallback and for clearing old cached files. Bump it (v3, v4, ...)
 // whenever you want to force-clear stale cached files from returning visitors.
-const CACHE = 'mathdecoded-v9';
+const CACHE = 'mathdecoded-v10';
 
 self.addEventListener('install', () => {
   self.skipWaiting();
