@@ -227,6 +227,7 @@
 <footer>
   &copy; <span id="year"></span> MathDecoded. Ιδιωτικά μαθήματα Μαθηματικών · SAT · Πανελλήνιες.
   · <a href="privacy.html">Πολιτική Απορρήτου</a> · <a href="oroi.html">Όροι χρήσης</a>
+  <span id="cookie-settings-wrap" hidden>· <a href="#" id="cookie-settings">Ρυθμίσεις cookies</a></span>
 </footer>
 
 <div id="cookie-banner" class="cookie-banner" hidden>
@@ -373,9 +374,21 @@
 
   const cookieBanner = document.getElementById('cookie-banner');
   const cookieChoice = getConsent();
+  // Withdrawing consent has to be as easy as giving it.
+  const csWrap = document.getElementById('cookie-settings-wrap');
+  if (csWrap && GA_MEASUREMENT_ID !== 'G-XXXXXXXXXX') {
+    csWrap.hidden = false;
+    document.getElementById('cookie-settings').addEventListener('click', (e) => {
+      e.preventDefault();
+      try { localStorage.removeItem('mathdecoded-cookie-consent'); } catch (err) {}
+      cookieBanner.hidden = false;
+    });
+  }
   if (cookieChoice === 'accepted') {
     loadAnalytics();
-  } else if (!cookieChoice) {
+  } else if (!cookieChoice && GA_MEASUREMENT_ID !== 'G-XXXXXXXXXX') {
+    // Ask only when there is something to consent to: with no real GA ID nothing
+    // is ever loaded, and a cookie question would be misleading.
     cookieBanner.hidden = false;
   }
   document.getElementById('cookie-accept').addEventListener('click', () => {
